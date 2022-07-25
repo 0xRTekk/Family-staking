@@ -1,23 +1,22 @@
 import { EthProvider } from "./contexts/EthContext";
-import Intro from "./components/Intro/";
-import Setup from "./components/Setup";
-import Demo from "./components/Demo";
+import { Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Home from './components/Home';
 import Footer from "./components/Footer";
-import "./App.css";
+import "./App.scss";
 
 function App() {
   return (
     <EthProvider>
       <div id="App" >
-        <div className="container">
-          <Intro />
-          <hr />
-          <Setup />
-          <hr />
-          <Demo />
-          <hr />
-          <Footer />
-        </div>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/stake/:token" element={<div>Stake your token !</div>} />
+          <Route path="/rewards" element={<div>Your rewards</div>} />
+          <Route path="*" element={<div>404</div>} />
+        </Routes>
+        <Footer />
       </div>
     </EthProvider>
   );
