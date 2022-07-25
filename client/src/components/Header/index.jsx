@@ -1,5 +1,5 @@
 // == Import
-import { Header as SemanticHeader, Icon, List, Button } from 'semantic-ui-react';
+import { Icon, List, Button } from 'semantic-ui-react';
 import { NavLink, Link } from 'react-router-dom';
 // import PropTypesLib from 'prop-types';
 import './header.scss';

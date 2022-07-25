@@ -1,0 +1,25 @@
+@use "src/styles/vars";
+
+.footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding: 2.3em 0;
+  background-color: vars.$dark-gray;
+
+  &-logo {
+    display: flex;
+    align-items: center;
+  }
+
+  &-link {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: black;
+
+    &:hover {
+      color: vars.$flash-color;
+    }
+  }
+}
