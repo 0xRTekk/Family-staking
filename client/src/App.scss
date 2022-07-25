@@ -4,86 +4,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  // justify-content: center;
   font-size: 1.6rem;
-}
 
-#App .container {
-  width: 40%;
-  min-width: 60rem;
-  max-width: 75rem;
-  height: 100%;
-}
-
-code {
-  display: block;
-  white-space: pre-wrap;
-  padding: 1.2rem 2rem;
-  border-radius: 1rem;
-  background-color: var(--light-gray);
-  font-size: 1.4rem;
-}
-
-p {
-  margin-top: 1rem;
-  margin-bottom: 1.4rem;
-  line-height: 2.6rem;
-}
-
-#App .container .welcome h1 {
-  padding-top: 7.5rem;
-  font-size: 2.6rem;
-}
-
-#App .container .demo .contract-container {
-  display: flex;
-}
-
-#App .container .demo .contract-container code {
-  min-width: 42rem;
-  border-radius: 1rem 0 0 1rem;
-}
-
-#App .container .demo .contract-container .btns {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: 0 1rem;
-  background-color: var(--gray);
-  border-radius: 0 1rem 1rem 0;
-}
-
-#App .container .demo .contract-container .btns>* {
-  width: 12rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 0;
-  background-color: var(--light-gray);
-  border: none;
-  font-size: 1.2rem;
-  font-family: monospace;
-  cursor: pointer;
-}
-
-#App .container .demo .contract-container .btns>*:hover {
-  background-color: var(--dark-gray);
-}
-
-#App .container .demo .contract-container .btns .input-btn input {
-  width: 4rem;
-  text-align: center;
-  font-family: monospace;
-  font-size: 1.2rem;
-}
-
-#App .container footer {
-  padding-bottom: 7.5rem;
-}
-
-#App .container footer a {
-  display: inline-block;
-  margin: 2rem 1rem 0 0;
+  & .container {
+    width: 40%;
+    min-width: 60rem;
+    max-width: 75rem;
+    height: 100%;
+  }
 }

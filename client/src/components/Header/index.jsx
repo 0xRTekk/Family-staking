@@ -1,5 +1,5 @@
 // == Import
-import { Header as SemanticHeader, Icon, List } from 'semantic-ui-react';
+import { Header as SemanticHeader, Icon, List, Button } from 'semantic-ui-react';
 import { NavLink, Link } from 'react-router-dom';
 // import PropTypesLib from 'prop-types';
 import './header.scss';
@@ -8,24 +8,30 @@ import './header.scss';
 function Header() {
   return (
     <header className="landing-header">
-      <div className="landing-left">
-        <div className="landing-logo">
+      <div className="landing-header-left">
+
+        <div className="landing-header-logo">
           <Icon name='ethereum' size='big' />
-          <SemanticHeader
-            as={NavLink}
-            to="/"
-          >
-            Family Staking
-          </SemanticHeader>
+          <NavLink
+              className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link')}
+              to="/"
+            >
+              <h1>Family Staking</h1>
+            </NavLink>
         </div>
 
         <List horizontal relaxed='very'>
           <List.Item>
-            <Link to="/stake/test">Staking</Link>
+            <Link
+              className="menu-link"
+              to="/stake/test"
+            >
+              Staking
+            </Link>
           </List.Item>
           <List.Item disabled>
             <NavLink
-              className={({ isActive }) => (isActive ? 'menu-link--active' : '')}
+              className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link')}
               to="/earn"
             >
               Earn
@@ -33,17 +39,17 @@ function Header() {
           </List.Item>
           <List.Item>
             <NavLink
-              className={({ isActive }) => (isActive ? 'menu-link--active' : '')}
+              className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link')}
               to="/rewards"
             >
               Rewards
             </NavLink>
           </List.Item>
-      </List>
+        </List>
 
       </div>
       
-      <div>Connect Wallet</div>
+      <Button color='purple' size='large'>Connect Wallet</Button>
     </header>
   );
 }

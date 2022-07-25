@@ -1,24 +1,33 @@
 @use "src/styles/vars";
 
 .landing-header {
-  width: 100%;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-around;
-}
+  width: 100%;
+  padding: 1em 0;
+  background-color: vars.$dark-gray;
 
-.landing-left {
-  display: flex;
-  align-items: baseline;
-}
+  &-logo {
+    display: flex;
+    align-items: flex-end;
+    margin-right: 2em;
+  }
 
-.landing-logo {
-  display: flex;
-  align-items: flex-end;
-  margin-right: 2em;
-}
+  &-left {
+    display: flex;
+    align-items: flex-end;
+    
+    .menu-link {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: black;
 
-.menu-link--active {
-  color: vars.$flash-color;
-  border-bottom: 2px solid vars.$flash-color;
+      &--active {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: vars.$flash-color;
+      }
+    }
+  }
 }

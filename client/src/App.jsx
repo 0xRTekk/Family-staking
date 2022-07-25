@@ -9,14 +9,18 @@ function App() {
   return (
     <EthProvider>
       <div id="App" >
+
         <Header />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/stake/:token" element={<div>Stake your token !</div>} />
           <Route path="/rewards" element={<div>Your rewards</div>} />
           <Route path="*" element={<div>404</div>} />
         </Routes>
+
         <Footer />
+
       </div>
     </EthProvider>
   );
