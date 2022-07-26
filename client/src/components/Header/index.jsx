@@ -1,11 +1,18 @@
 // == Import
 import { Icon, List, Button } from 'semantic-ui-react';
-import { NavLink, Link } from 'react-router-dom';
-// import PropTypesLib from 'prop-types';
+import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import './header.scss';
 
 // == Composant
 function Header() {
+  const dispacth = useDispatch();
+
+  const handleConnect = () => {
+    console.log('Connect');
+    dispacth({ type: 'CONNECT' });
+  };
+
   return (
     <header className="landing-header">
       <div className="landing-header-left">
@@ -49,7 +56,13 @@ function Header() {
 
       </div>
       
-      <Button color='purple' size='large'>Connect Wallet</Button>
+      <Button
+        color='purple'
+        size='large'
+        onClick={handleConnect}
+      >
+        Connect Wallet
+      </Button>
     </header>
   );
 }
