@@ -15,7 +15,7 @@ function Footer() {
 
       <List horizontal relaxed='very'>
         <List.Item>
-          <Link className="footer-link" to="https://github.com/Remitekky/Family-staking">GitHub</Link>
+          <a className="footer-link" target="_blank" href="https://github.com/Remitekky/Family-staking" rel="noreferrer">GitHub</a>
         </List.Item>
         <List.Item>
           <Link className="footer-link" to="/#">Team</Link>
