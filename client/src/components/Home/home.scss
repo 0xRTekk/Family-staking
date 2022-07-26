@@ -1,0 +1,7 @@
+@use 'src/styles/vars';
+
+main {
+  width: 100%;
+  padding: 3em 0;
+  background-color: vars.$light-gray;
+}

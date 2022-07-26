@@ -1,12 +1,13 @@
 // == Import
 // import PropTypesLib from 'prop-types';
-// import './style.scss';
+import Hero from '../Hero';
+import './home.scss';
 
 // == Composant
 function Home() {
   return (
-    <main className="container">
-      <div>Hero</div>
+    <main>
+      <Hero />
       <div>Stacking List</div>
     </main>
   );
