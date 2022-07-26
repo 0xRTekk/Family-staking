@@ -1,0 +1,35 @@
+@use 'src/styles/vars';
+@use 'sass:color';
+
+.stacking-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 3em 0;
+  background-color: darken(vars.$light-gray, 5%);
+
+  &-title {
+    font-size: 1.8em !important;
+    margin-bottom: 2em !important;
+  }
+
+  &-subtitle {
+    font-size: 0.45em !important;
+  }
+
+  .staking-items {
+    width: 80%;
+
+    .staking-item {
+      &-title,
+      &-meta {
+        margin-bottom: 1em;
+      }
+      
+      &-apr {
+        color: vars.$primary-color;
+      }
+    }
+  }
+}
