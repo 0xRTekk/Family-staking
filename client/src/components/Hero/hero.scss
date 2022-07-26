@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  padding-bottom: 2em;
 
   &-title {
     font-size: 2em !important;
@@ -13,5 +14,13 @@
 
   &-button {
     margin-top: 1.5em !important;
+
+    a {
+      color: white;
+
+      &:hover {
+        color: white !important;
+      }
+    }
   }
 }

@@ -22,12 +22,12 @@ function Header() {
 
         <List horizontal relaxed='very'>
           <List.Item>
-            <Link
+            <a
               className="menu-link"
-              to="/stake/test"
+              href="/#stacking-list-anchor"
             >
               Staking
-            </Link>
+            </a>
           </List.Item>
           <List.Item disabled>
             <NavLink
