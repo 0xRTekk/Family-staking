@@ -1,18 +1,13 @@
 // == Import
 import { Icon, List, Button } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import Web3 from 'web3';
+import { useEth } from "../../contexts/EthContext";
+import Account from '../Account';
 import './header.scss';
 
 // == Composant
 function Header() {
-  const dispacth = useDispatch();
-
-  const handleConnect = () => {
-    console.log('Connect');
-    dispacth({ type: 'CONNECT' });
-  };
-
   return (
     <header className="landing-header">
       <div className="landing-header-left">
@@ -59,10 +54,10 @@ function Header() {
       <Button
         color='purple'
         size='large'
-        onClick={handleConnect}
       >
         Connect Wallet
       </Button>
+
     </header>
   );
 }

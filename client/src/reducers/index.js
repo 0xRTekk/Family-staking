@@ -1,11 +1,63 @@
-import { combineReducers } from 'redux';
+export const initialState = {
+  logged: false,
+  account: null,
+  stakeInputValue: '',
+  tokens: [
+    {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      apr: 0.039,
+      price: 1602,
+      totalStaked: 0,
+      FAMRewards: 0,
+    },
+    {
+      name: 'Dai',
+      symbol: 'DAI',
+      apr: 0.027,
+      price: 1,
+      totalStaked: 0,
+      FAMRewards: 0,
+    },
+    {
+      name: 'Family token',
+      symbol: 'FAM',
+      apr: 0.1,
+      price: 17,
+      totalStaked: 0,
+      FAMRewards: 0,
+    },
+  ]
+};
 
-import erc20Reducer from './erc20';
-import userReducer from './user';
+const reducer = (state = initialState, action = {}) => {
+  switch (action.type) {
+    case 'CHANGE_STAKING_VALUE':
+      return {
+        ...state,
+        stakeInputValue: action.value,
+      }
+    case 'STAKE': {
+      // On recup le token FAM
+      const FAMToken = state.tokens.find((token) => token.symbol === "FAM");
+      // On recup le token a stake
+      const tokenToStake = state.tokens.find((token) => token.symbol === action.token);
+      // On rajoute le montant a stake
+      tokenToStake.totalStaked += parseInt(state.stakeInputValue);
+      // Calcul des estimated rewards en FAM
+      tokenToStake.FAMRewards = (tokenToStake.price * tokenToStake.totalStaked * tokenToStake.apr) / FAMToken.price;
+      return {
+        ...state,
+        stakeInputValue: '',
+        tokens: [
+          ...state.tokens,
+          tokenToStake
+        ]
+      }
+    }
+    default:
+      return state;
+  }
+};
 
-const rootReducer = combineReducers({
-  erc20: erc20Reducer,
-  user: userReducer,
-});
-
-export default rootReducer;
+export default reducer;

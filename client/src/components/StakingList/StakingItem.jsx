@@ -1,17 +1,16 @@
 // == Import
 import { Link } from 'react-router-dom';
 import { Card, Button } from 'semantic-ui-react';
-// import PropTypesLib from 'prop-types';
 
 // == Composant
-function StakingItem() {
+function StakingItem({ name, symbol, apr }) {
   return (
     <Card className="staking-item" raised>
       <Card.Content textAlign="center">
-        <Card.Header className="staking-item-title">Ethereum</Card.Header>
-        <Card.Meta className="staking-item-meta">Stake any amount of ETH and earn daily staking rewards.</Card.Meta>
+        <Card.Header className="staking-item-title">{name}</Card.Header>
+        <Card.Meta className="staking-item-meta">Stake any amount of {symbol} and earn daily staking rewards.</Card.Meta>
         <Card.Description>
-          APR <br/> <strong className="staking-item-apr">3.9%</strong>
+          APR <br/> <strong className="staking-item-apr">{apr}</strong>
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
