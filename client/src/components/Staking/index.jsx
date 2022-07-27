@@ -11,10 +11,6 @@ function Staking() {
   const tokens = useSelector((state) => state.tokens);
   const inputValue = useSelector((state) => state.stakeInputValue);
   const tokenToDisplay = tokens.find((item) => item.symbol === token);
-  // const FAMToken = tokens.find((item) => item.symbol === "FAM");
-
-  // // Calcul des estimated rewards en FAM
-  // const estimatedRewardsFAM = (tokenToDisplay.price * tokenToDisplay.totalStaked * tokenToDisplay.apr) / FAMToken.price;
 
   const handleChange = (evt) => {
     dispatch({ type: 'CHANGE_STAKING_VALUE', value: evt.target.value });
@@ -56,7 +52,7 @@ function Staking() {
               </div>
               <div className="staking-datas-estimated-rewards">
                 <p>Estimated rewards</p>
-                <p>{tokenToDisplay.FAMRewards.toFixed(3)}FAM</p>
+                <p>{tokenToDisplay.estimatedFAMRewards.toFixed(3)}FAM</p>
               </div>
             </div>
           </Card.Description>

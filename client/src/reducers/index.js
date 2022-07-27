@@ -9,7 +9,9 @@ export const initialState = {
       apr: 0.039,
       price: 1602,
       totalStaked: 0,
-      FAMRewards: 0,
+      estimatedFAMRewards: 0,
+      initialStakingDate: null,
+      earnedFAM: 0,
     },
     {
       name: 'Dai',
@@ -17,7 +19,9 @@ export const initialState = {
       apr: 0.027,
       price: 1,
       totalStaked: 0,
-      FAMRewards: 0,
+      estimatedFAMRewards: 0,
+      initialStakingDate: null,
+      earnedFAM: 0,
     },
     {
       name: 'Family token',
@@ -25,7 +29,9 @@ export const initialState = {
       apr: 0.1,
       price: 17,
       totalStaked: 0,
-      FAMRewards: 0,
+      estimatedFAMRewards: 0,
+      initialStakingDate: null,
+      earnedFAM: 0,
     },
   ]
 };
@@ -45,13 +51,28 @@ const reducer = (state = initialState, action = {}) => {
       // On rajoute le montant a stake
       tokenToStake.totalStaked += parseInt(state.stakeInputValue);
       // Calcul des estimated rewards en FAM
-      tokenToStake.FAMRewards = (tokenToStake.price * tokenToStake.totalStaked * tokenToStake.apr) / FAMToken.price;
+      tokenToStake.estimatedFAMRewards = (tokenToStake.price * tokenToStake.totalStaked * tokenToStake.apr) / FAMToken.price;
       return {
         ...state,
         stakeInputValue: '',
         tokens: [
           ...state.tokens,
           tokenToStake
+        ]
+      }
+    }
+    case 'UNSTAKE': {
+      const tokenToUnstake = state.tokens.find((token) => token.symbol === action.token);
+      tokenToUnstake.totalStaked = 0;
+      tokenToUnstake.estimatedFAMRewards = 0;
+      // TODO: Fonction calcul rewards 
+      tokenToUnstake.earnedFAM += 0.04712;
+      return {
+        ...state,
+        stakeInputValue: '',
+        tokens: [
+          ...state.tokens,
+          tokenToUnstake
         ]
       }
     }
