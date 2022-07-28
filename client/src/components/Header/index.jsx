@@ -1,13 +1,13 @@
 // == Import
 import { Icon, List, Button } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
-import Web3 from 'web3';
 import { useEth } from "../../contexts/EthContext";
-import Account from '../Account';
 import './header.scss';
 
 // == Composant
 function Header() {
+  const { state: { accounts }} = useEth();
+
   return (
     <header className="landing-header">
       <div className="landing-header-left">
@@ -51,13 +51,12 @@ function Header() {
 
       </div>
       
-      <Button
-        color='purple'
-        size='large'
-      >
-        Connect Wallet
-      </Button>
-
+      {accounts && 
+        <Button basic color='purple' size='small'>
+          <Icon name='user' />
+          <p>{accounts[0]}</p>
+        </Button>
+      }
     </header>
   );
 }
