@@ -14,7 +14,7 @@ function StakingItem({ name, symbol, apr }) {
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <Button fluid color='purple' className="staking-item-button" as={Link} to="/stake/ETH">
+        <Button fluid color='purple' className="staking-item-button" as={Link} to={`/stake/${symbol}`}>
           Stake Now
         </Button>
       </Card.Content>
