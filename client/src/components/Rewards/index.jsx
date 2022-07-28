@@ -1,6 +1,7 @@
 // == Import
 import { Header, Segment, Card, Button } from 'semantic-ui-react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import './rewards.scss';
 
 // == Composant
@@ -47,9 +48,8 @@ function Rewards() {
                     color='purple'
                     className="rewards-button"
                     floated='right'
-                    onClick={() => {
-                      dispatch({ type: 'UNSTAKE', token: token.symbol });
-                    }}
+                    as={Link}
+                    to={`/unstake/${token.symbol}`}
                     >
                     Unstake
                   </Button>

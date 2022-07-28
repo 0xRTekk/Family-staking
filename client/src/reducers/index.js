@@ -2,6 +2,7 @@ export const initialState = {
   logged: false,
   account: null,
   stakeInputValue: '',
+  unstakeInputValue: '',
   tokens: [
     {
       name: 'Ethereum',
@@ -43,6 +44,11 @@ const reducer = (state = initialState, action = {}) => {
         ...state,
         stakeInputValue: action.value,
       }
+    case 'CHANGE_UNSTAKING_VALUE':
+      return {
+        ...state,
+        unstakeInputValue: action.value,
+      }
     case 'STAKE': {
       // On recup le token FAM
       const FAMToken = state.tokens.find((token) => token.symbol === "FAM");
@@ -63,13 +69,13 @@ const reducer = (state = initialState, action = {}) => {
     }
     case 'UNSTAKE': {
       const tokenToUnstake = state.tokens.find((token) => token.symbol === action.token);
-      tokenToUnstake.totalStaked = 0;
+      tokenToUnstake.totalStaked = tokenToUnstake.totalStaked - Number(state.unstakeInputValue);
       tokenToUnstake.estimatedFAMRewards = 0;
       // TODO: Fonction calcul rewards 
       tokenToUnstake.earnedFAM += 0.04712;
       return {
         ...state,
-        stakeInputValue: '',
+        unstakeInputValue: '',
         tokens: [
           ...state.tokens,
           tokenToUnstake
