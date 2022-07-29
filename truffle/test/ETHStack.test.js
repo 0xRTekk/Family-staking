@@ -11,6 +11,7 @@ contract('Test Stacking ETH', accounts => {
 
     let ETHStackInstance;
     let oneEth = web3.utils.toWei(new BN(1), "ether");
+    let twoEth = web3.utils.toWei(new BN(2), "ether");
 
     describe('Tests: Eth stacking and withdrawal', function () {
         before(async () => {
@@ -32,8 +33,15 @@ contract('Test Stacking ETH', accounts => {
 
         it("... should now hold 1 ETH", async () => {
             let contractBalance = await web3.eth.getBalance(ETHStackInstance.address);
-            console.log(contractBalance);
             assert.equal(contractBalance, oneEth);
+        });
+
+        it("... should hold 1 ETH in the user1 account", async () => {
+            expect(await ETHStackInstance.getBalance.call(_user1)).to.be.bignumber.equal(oneEth, "Incorrect balance");
+        });
+
+        it("... should forbid user to unstack more than their balance", async () => {
+            await expectRevert(ETHStackInstance.unstack(twoEth, {from: _user1}), 'Cannot withdraw more than your current balance');
         });
 
         it("... should allow to unstack ETH", async () => {
@@ -50,8 +58,12 @@ contract('Test Stacking ETH', accounts => {
             assert.equal(contractBalance, 0);
         });
 
-        it("... should forbid user to unstack more than their balance", async () => {
-            expectRevert(await ETHStackInstance.unstack(oneEth, {from: _user1}), "Cannot withdraw more than your current balance");
+        it("... should hold 0 ETH in the user1 account", async () => {
+            expect(await ETHStackInstance.getBalance.call(_user1)).to.be.bignumber.equal(new BN(0), "Incorrect balance");
+        });
+
+        it("... should forbid user to unstack when their account is empty", async () => {
+            await expectRevert(ETHStackInstance.unstack(oneEth, {from: _user1}), 'Account is empty');
         });
     });
 
@@ -59,18 +71,6 @@ contract('Test Stacking ETH', accounts => {
 
         beforeEach(async () => {
             ETHStackInstance = await ETHStack.new();
-        });
-
-        it("... should track user total stack amount", async () => {
-            let totalAmount = stackAmount;
-            await ETHStackInstance.stack({from: _user1, value: stackAmount});
-            expect(await ETHStackInstance.getBalance.call(_user1)).to.be.bignumber.equal(totalAmount, "Incorrect balance");
-            totalAmount += stackAmount;
-            await ETHStackInstance.stack({from: _user1, value: stackAmount});
-            expect(await ETHStackInstance.getBalance.call(_user1)).to.be.bignumber.equal(totalAmount, "Incorrect balance");
-            totalAmount -= stackAmount;
-            await ETHStackInstance.unstack(stackAmount, {from: _user1});
-            expect(await ETHStackInstance.getBalance.call(_user1)).to.be.bignumber.equal(totalAmount, "Incorrect balance");
         });
     });
 });
