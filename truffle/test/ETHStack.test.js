@@ -68,9 +68,16 @@ contract('Test Stacking ETH', accounts => {
     });
 
     describe('Tests: Misc/To do', function () {
-
         beforeEach(async () => {
             ETHStackInstance = await ETHStack.new();
+        });
+
+        it("... should add value to an account even in case of a send", async () => {
+            const receipt = await ETHStackInstance.send(oneEth, {from: _user1});
+            expectEvent(receipt, "StackRegistered", {
+                userAddress: _user1,
+                amount: oneEth
+            });
         });
     });
 });

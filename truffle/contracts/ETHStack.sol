@@ -2,6 +2,8 @@
 
 pragma solidity 0.8.15;
 
+/// @title Stacking contract for ETH
+/// @notice This contract is used to stack ETH through the Family-Stacking app
 contract ETHStack {
     // Variables
     mapping(address => uint) stacks;
