@@ -18,7 +18,9 @@ contract Fam is ERC20, Ownable {
     
     // Constructor
 
-	constructor() ERC20('Family Token', 'FAM') {}
+	constructor() ERC20('Family Token', 'FAM') {
+		_mint(msg.sender, 100 * 10 ** decimals());
+	}
 	
 	/** 
 	@dev fonction faucet pour créer des Fam tokens
