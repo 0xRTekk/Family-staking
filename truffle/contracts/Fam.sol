@@ -6,6 +6,7 @@ import '../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import '../node_modules/@openzeppelin/contracts/access/Ownable.sol';
  
 contract Fam is ERC20, Ownable {
+
 	
 
 	constructor() ERC20('Family Token', 'FAM') {}
@@ -22,4 +23,7 @@ contract Fam is ERC20, Ownable {
 	function decimals() public view virtual override returns (uint8){
 		return 8;
 	}
+
+
+    
 }
