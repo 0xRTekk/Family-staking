@@ -8,9 +8,8 @@ import '../node_modules/@openzeppelin/contracts/access/Ownable.sol';
 contract Fam is ERC20, Ownable {
 	
 
-	constructor() ERC20('Family Token', 'FAM') {
-		_mint(msg.sender, 100000 * 10);
-	}
+	constructor() ERC20('Family Token', 'FAM') {}
+	
 	/* 
 	@dev fonction faucet pour créer des Fam tokens
 	**/
