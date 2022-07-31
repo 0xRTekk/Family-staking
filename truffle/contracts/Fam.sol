@@ -55,8 +55,8 @@ contract Fam is ERC20, Ownable {
      @notice return the balance of an account
 	 */
 
-   function balanceOfFAM(address account)public view returns(uint){
-      balanceOf(account);
+   function balanceOfFAM(address account) public view  returns (uint) {
+      return balanceOf(account);
    }
    
 }
