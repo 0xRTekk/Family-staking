@@ -2,8 +2,10 @@ const { BN, expectRevert } = require('@openzeppelin/test-helpers');
 const { inLogs } = require('@openzeppelin/test-helpers/src/expectEvent');
 const expectEvent = require('@openzeppelin/test-helpers/src/expectEvent');
 const { web3 } = require('@openzeppelin/test-helpers/src/setup');
+const { latestBlock } = require('@openzeppelin/test-helpers/src/time');
 const { expect, assert } = require('chai');
 const ETHStake = artifacts.require('ETHStake');
+const { advanceTimeAndBlock } = require('./helpers/timeTravelHelper');
 
 contract('Test Staking ETH', accounts => {
     const _owner = accounts[0];
@@ -23,7 +25,7 @@ contract('Test Staking ETH', accounts => {
             assert.equal(contractBalance, 0);
         });
 
-        it("... should allow to stake ETH", async () => {
+        it("... should allow to deposit ETH", async () => {
             const receipt = await ETHStakeInstance.deposit({from: _user1, value: oneEth});
             expectEvent(receipt, "DepositRegistered", {
                 userAddress: _user1,
@@ -40,7 +42,13 @@ contract('Test Staking ETH', accounts => {
             expect(await ETHStakeInstance.getBalance.call(_user1)).to.be.bignumber.equal(oneEth, "Incorrect balance");
         });
 
+        it("... should time lock user's deposits for 2 days", async () => {
+            await expectRevert(ETHStakeInstance.withdraw.call(oneEth, {from: _user1}), "Deposit is time locked");
+        });
+
         it("... should forbid user to withdraw more than their balance", async () => {
+            // Forwarding time to 3 days later
+            await advanceTimeAndBlock(259200);
             await expectRevert(ETHStakeInstance.withdraw(twoEth, {from: _user1}), 'Cannot withdraw more than your current balance');
         });
 
@@ -52,6 +60,8 @@ contract('Test Staking ETH', accounts => {
                 amount: oneEth
             });
         });
+
+        
 
         it("... should now hold 0 ETH again", async () => {
             let contractBalance = await web3.eth.getBalance(ETHStakeInstance.address);
