@@ -3,10 +3,10 @@ const { BN, expectRevert, expectEvent } = require('@openzeppelin/test-helpers');
 
 const {expect, assert} = require('chai')
 
-Contract('Fam',([owner, client]) => {
+Contract('TEST : FAM Token Smart contract',([owner, client]) => {
    
     let FamERC20Instance;
-    describe("testing Faucet", function (){
+    describe("Testing Faucet", function (){
         before (async function (){
             FamERC20Instance = await Fam.new({ from : owner});
         });
