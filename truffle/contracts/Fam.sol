@@ -11,7 +11,7 @@ import '../node_modules/@openzeppelin/contracts/access/Ownable.sol';
 * @notice This contract is used to create FAM 
 */
  
-contract Fam is ERC20, Ownable {
+contract FAM is ERC20, Ownable {
 
 	// events
 	event FamTransfered(address recipient, uint amount);
@@ -39,26 +39,5 @@ contract Fam is ERC20, Ownable {
 		return 8;
 	}
 
-    /** 
-	 * @dev See {IERC20-transfer} Openzeppelin librairy
-     *
-     * Requirements:
-     *
-     * - `to` cannot be the zero address.
-     * - the caller must have a balance of at least `amount`.
-	*/
-
-   function transferFAM(address recipient, uint amount) public{
-       transfer(recipient , amount);
-	   emit FamTransfered(recipient, amount);
-   }
-
-    /**
-     @notice return the balance of an account
-	 */
-
-   function balanceOfFAM(address account) public view  returns (uint) {
-      return balanceOf(account);
-   }
    
 }
