@@ -46,6 +46,7 @@ contract FamStack {
      */
     
     function deposit(uint256 _amount) public payable {
+        require(amount > 0, "Amount cannot be 0");
         fam.transferFrom(msg.sender, address(this), _amount);
         emit StackRegistered( _amount);
     }
