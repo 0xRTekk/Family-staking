@@ -7,25 +7,35 @@ pragma solidity 0.8.15;
 contract ETHStake {
     // Variables
     mapping(address => Stake) stakes;
+    mapping(address => uint) pendingRewards;
 
     struct Stake {
         uint amount;
-        uint lockRelease;
+        uint depositDate;
     }   
 
     // Events
-    event DepositRegistered(address userAddress, uint amount, uint lockedUntil);
+    event DepositRegistered(address userAddress, uint amount, uint pendingReward);
     event WithdrawRegistered(address userAddress, uint amount);
 
     /**
      * @dev Internal function that register the stake. Used by the stake function and the default receive function. Emits a StakeRegistered event.
      */ 
     function registerDeposit() internal {
-        uint userStake = stakes[msg.sender].amount;
-        uint newLock = block.timestamp + 2 days;
-        stakes[msg.sender].amount = userStake + msg.value;
-        stakes[msg.sender].lockRelease = newLock;
-        emit DepositRegistered(msg.sender, msg.value, newLock);
+        uint currentStake = stakes[msg.sender].amount;
+        uint currentDepositDate = stakes[msg.sender].depositDate;
+        // Updating the user stake first
+        stakes[msg.sender].amount = currentStake + msg.value;
+        stakes[msg.sender].depositDate = block.timestamp;
+        // We need to calculate the pending reward amount and store it
+        // calculating nbDay since deposit
+        uint nbDay = (block.timestamp - currentDepositDate) / 60 / 60 / 24;
+        // APR = 3.9% ETH / AN soit 0.01% ETH/jour
+        uint dummyETHValue = 1980;
+        uint reward = (nbDay * (dummyETHValue*100)) / 100;
+        pendingRewards[msg.sender] += reward;                
+        
+        emit DepositRegistered(msg.sender, msg.value, reward);
     }
 
     /**
@@ -51,7 +61,7 @@ contract ETHStake {
      */
     function withdraw(uint _amount) external {
         uint userStake = stakes[msg.sender].amount;
-        uint timeLock = stakes[msg.sender].lockRelease;
+        uint timeLock = stakes[msg.sender].depositDate + 2 days;
 
         require(userStake != 0, "Account is empty");
         require(block.timestamp >= timeLock, "Deposit is time locked");
