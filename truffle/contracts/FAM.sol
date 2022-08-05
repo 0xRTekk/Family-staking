@@ -28,7 +28,7 @@ contract FAM is ERC20, Ownable {
 
 	function faucet(address recipient, uint amount) external onlyOwner {
 		_mint(recipient, amount);
-		
+		emit FamTransfered(recipient, amount);
 	}
 
     /** 
