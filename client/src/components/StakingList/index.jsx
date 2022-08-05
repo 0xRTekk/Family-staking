@@ -1,11 +1,13 @@
 // == Import
-import { Header, Card, Image, Button } from 'semantic-ui-react';
-// import PropTypesLib from 'prop-types';
+import { Header, Card } from 'semantic-ui-react';
+import { useSelector } from 'react-redux';
 import StakingItem from './StakingItem';
 import './stacking-list.scss';
 
 // == Composant
 function StakingList() {
+  const tokens = useSelector((state) => state.tokens);
+  
   return (
     <div className="stacking-list" id="stacking-list-anchor">
       <Header as='h2' className="stacking-list-title" textAlign='center'>
@@ -17,16 +19,8 @@ function StakingList() {
       </Header>
 
     <Card.Group className="staking-items" centered itemsPerRow={3}>
-
-      <StakingItem />
-      <StakingItem />
-      <StakingItem />
-      <StakingItem />
-      <StakingItem />
-      <StakingItem />
-      
+      {tokens.map((token) => <StakingItem key={token.symbol} {...token} />)}
     </Card.Group>
-
     </div>
   );
 }
