@@ -5,7 +5,7 @@ pragma solidity 0.8.15;
 
 import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./Fam.sol";
+import "./FAM.sol";
 
 
 /**
@@ -46,7 +46,7 @@ contract FamStack {
      */
     
     function deposit(uint256 _amount) public payable {
-        require(amount > 0, "Amount cannot be 0");
+        require(_amount > 0, "Amount cannot be 0");
         fam.transferFrom(msg.sender, address(this), _amount);
         emit StackRegistered( _amount);
     }

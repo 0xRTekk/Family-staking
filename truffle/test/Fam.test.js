@@ -1,7 +1,7 @@
 const Fam = artifacts.require("FAM");
-const { BN, expectRevert, expectEvent } = require('@openzeppelin/test-helpers');
+const { BN } = require('@openzeppelin/test-helpers');
 
-const {expect, assert} = require('chai')
+const {expect} = require('chai')
 
 contract('TEST : FAM Token Smart contract',([owner, client]) => {
    
