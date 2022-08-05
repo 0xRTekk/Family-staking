@@ -58,12 +58,15 @@ const reducer = (state = initialState, action = {}) => {
       tokenToStake.totalStaked += parseInt(state.stakeInputValue);
       // Calcul des estimated rewards en FAM
       tokenToStake.estimatedFAMRewards = (tokenToStake.price * tokenToStake.totalStaked * tokenToStake.apr) / FAMToken.price;
+      // Nouvelle version du state.tokens sans le token à rajouter
+      const newStateTokens = state.tokens.filter((token) => token.symbol !== action.token);
+      newStateTokens.push(tokenToStake);
+      
       return {
         ...state,
         stakeInputValue: '',
         tokens: [
-          ...state.tokens,
-          tokenToStake
+          ...newStateTokens
         ]
       }
     }
@@ -73,12 +76,14 @@ const reducer = (state = initialState, action = {}) => {
       tokenToUnstake.estimatedFAMRewards = 0;
       // TODO: Fonction calcul rewards 
       tokenToUnstake.earnedFAM += 0.04712;
+      // Nouvelle version du state.tokens sans le token à rajouter
+      const newStateTokens = state.tokens.filter((token) => token.symbol !== action.token);
+      newStateTokens.push(tokenToUnstake);
       return {
         ...state,
         unstakeInputValue: '',
         tokens: [
-          ...state.tokens,
-          tokenToUnstake
+          ...newStateTokens
         ]
       }
     }
