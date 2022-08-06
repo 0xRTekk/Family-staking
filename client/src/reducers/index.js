@@ -34,7 +34,8 @@ export const initialState = {
       initialStakingDate: null,
       earnedFAM: 0,
     },
-  ]
+  ],
+  depositEvents: [],
 };
 
 const reducer = (state = initialState, action = {}) => {
@@ -85,6 +86,21 @@ const reducer = (state = initialState, action = {}) => {
         tokens: [
           ...newStateTokens
         ]
+      }
+    }
+    case 'DEPOSIT_EVENT': {
+      return {
+        ...state,
+        depositEvents: [
+          ...state.depositEvents,
+          action.event,
+        ]
+      }
+    }
+    case 'GET_PAST_DEPOSIT_EVENTS': {
+      return {
+        ...state,
+        depositEvents: action.events,
       }
     }
     default:

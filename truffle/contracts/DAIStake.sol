@@ -54,8 +54,7 @@ contract DAIStake {
     function deposit(uint256 _amount) external {
         require(msg.sender != address(0), "Address can not be null");
         require(dai.balanceOf(msg.sender) >= _amount, "Insufficient balance");
-        dai.approve(address(this), _amount); // Fonctionne pas
-        // dai.transferFrom(msg.sender, address(this), _amount);
+        dai.transferFrom(msg.sender, address(this), _amount);
         emit DepositRegistered(msg.sender, _amount, block.timestamp);
     }
 
