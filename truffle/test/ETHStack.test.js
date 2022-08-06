@@ -106,7 +106,6 @@ contract('Test Staking ETH', accounts => {
             await ETHStakeInstance.deposit({from: _user1, value: oneEth});
             // PendingRewards should have been calculated
             const pendingRewards = await ETHStakeInstance.getPendingRewards(_user1, {from: _user1});
-            console.log(pendingRewards.toString());
             expect(pendingRewards).to.be.bignumber.greaterThan(new BN(0), "PendingRewards not calculated");
             // Forwarding time to 10 days later
             await advanceTimeAndBlock(864000);

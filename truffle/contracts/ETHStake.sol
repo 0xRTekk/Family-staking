@@ -14,6 +14,7 @@ contract ETHStake {
         uint depositDate;
     }   
 
+    address FAM;
     uint minDeposit = 10000000000000000;
 
     // Events
@@ -40,6 +41,13 @@ contract ETHStake {
         emit DepositRegistered(msg.sender, msg.value);
     }
 
+    /**
+     * @notice Updates the pending rewards balance of the user
+     * @dev never called from outside of the contract
+     * @param _stakes stake balance of the user
+     * @param _from uint date of last deposit / to calcul from
+     * @param _userAddress address of the user
+     */
     function updatePendingRewards(uint _stakes, uint _from, address _userAddress) internal{
         // calculating nbDay since deposit
         uint nbDay = (block.timestamp - _from) / 60 / 60 / 24;
@@ -95,9 +103,10 @@ contract ETHStake {
 
         // Updating the user's stake
         stakes[msg.sender].amount = userStake - _amount;
+
         // Calculating and updating the pending rewards amount
         updatePendingRewards(userStake, referenceDate, msg.sender);
-        uint rewardsToSend = pendingRewards[msg.sender];
+        uint rewardsToMint = pendingRewards[msg.sender];
         pendingRewards[msg.sender] = 0;
         // TODO Minting the rewardsToSend to the user
 
