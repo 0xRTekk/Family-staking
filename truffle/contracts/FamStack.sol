@@ -21,8 +21,12 @@ contract FamStack {
     mapping (address => bool) public rewardClaimed;
     uint  public start;
     uint public end;
-    uint public totalStacked;
-    uint public reward;
+    mapping (address => Stake) stakeBalance;
+
+      struct Stake {
+        uint amount;
+        uint lastDistribution;
+    } 
 
     /// Events
    
@@ -33,12 +37,11 @@ contract FamStack {
 
     constructor (address _FAM) {
         fam = IERC20(_FAM);
-        start = block.timestamp;
-        end = block.timestamp + 2 days;
+        
     }
 
-        function balance() public view returns (uint256) {
-        return fam.balanceOf(address(this));
+        function balance(address _add) public view returns (uint256) {
+        return stakeBalance[_add].amount;
     }
 
     /**
@@ -47,6 +50,7 @@ contract FamStack {
     
     function deposit(uint256 _amount) public payable {
         require(_amount > 0, "Amount cannot be 0");
+        require(fam.balanceOf(msg.sender) >= _amount, "Your balance is null");
         fam.transferFrom(msg.sender, address(this), _amount);
         emit StackRegistered( _amount);
     }
@@ -80,10 +84,10 @@ contract FamStack {
      */
 
 
-    function withdrawAll() public {
+    function withdrawAll(address _add) public {
         require(rewardClaimed[msg.sender] == false, 'you already received your reward');
-        require(balance() > 0 , 'not a stacker');
-        withdraw(balance());
+
+        withdraw(stakeBalance[_add].amount);
         rewardClaimed [msg.sender] = true;
     }
 

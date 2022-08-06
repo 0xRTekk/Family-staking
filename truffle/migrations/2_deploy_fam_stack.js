@@ -12,6 +12,5 @@ module.exports =  async function (deployer, _network) {
 	console.log(balance0.toString());
     console.log(token.address);
 	
-
 	
-};
+}
