@@ -35,7 +35,7 @@ function Rewards() {
                       <p>{token.totalStaked * token.price} $</p>
                     </div>
                     <div className="rewards-FAM-earned">
-                      <p><strong>FAM earned</strong></p>
+                      <p><strong>Estimated FAM to earn</strong></p>
                       <p>{token.earnedFAM} FAM</p>
                       <p>{token.earnedFAM * FAM.price} $</p>
                     </div>
