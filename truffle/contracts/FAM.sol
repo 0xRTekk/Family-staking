@@ -19,16 +19,15 @@ contract FAM is ERC20, Ownable {
     // Constructor
 
 	constructor() ERC20('Family Token', 'FAM') {
-		_mint(msg.sender, 100 * 10 ** decimals());
+		// _mint(msg.sender, 100 * 10 ** decimals());
 	}
 	
 	/** 
 	@dev fonction faucet pour créer des Fam tokens
 	*/
-
 	function faucet(address recipient, uint amount) external onlyOwner {
 		_mint(recipient, amount);
-		
+		emit FamTransfered(recipient, amount);
 	}
 
     /** 
@@ -36,7 +35,7 @@ contract FAM is ERC20, Ownable {
 	*/
 
 	function decimals() public view virtual override returns (uint8){
-		return 8;
+		return 18;
 	}
 
    
