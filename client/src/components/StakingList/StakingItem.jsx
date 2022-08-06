@@ -10,7 +10,7 @@ function StakingItem({ name, symbol, apr }) {
         <Card.Header className="staking-item-title">{name}</Card.Header>
         <Card.Meta className="staking-item-meta">Stake any amount of {symbol} and earn daily staking rewards.</Card.Meta>
         <Card.Description>
-          APR <br/> <strong className="staking-item-apr">{apr}</strong>
+          APR <span className="staking-item-apr-info">estimated for 1 year</span> <br/> <strong className="staking-item-apr">{apr}</strong>
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
