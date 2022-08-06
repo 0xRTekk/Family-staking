@@ -1,7 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // == Import
-import { Header, Card, Button, Form } from 'semantic-ui-react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import Web3 from 'web3';
+import { useEth } from '../../contexts/EthContext';
+import findContract from '../../selectors/findContract';
+import { Header, Card, Button, Form } from 'semantic-ui-react';
 import './staking.scss';
 
 // == Composant
@@ -11,14 +16,55 @@ function Staking() {
   const tokens = useSelector((state) => state.tokens);
   const inputValue = useSelector((state) => state.stakeInputValue);
   const tokenToDisplay = tokens.find((item) => item.symbol === token);
+  const { state: { accounts, artifact, contract, networkID } } = useEth();
 
   const handleChange = (evt) => {
     dispatch({ type: 'CHANGE_STAKING_VALUE', value: evt.target.value });
   };
 
-  const handleStake = () => {
+  const handleStake = async () => {
+
+    // On recup les instances des contracts à utiliser
+    const DAIContract = findContract(artifact, contract, networkID, "DAI");
+    const DAIStakeContract = findContract(artifact, contract, networkID, "DAIStake");
+    
+    // On recup l'allowance du contract de staking sur les tokens de l'account
+    const allowance = await DAIContract.methods.allowance(accounts[0], DAIStakeContract.options.address).call({ from: accounts[0] });
+
+    // Si l'allowance n'est pas suffisante
+    if (allowance < parseInt(inputValue)) {
+      // On définit la valeur de l'allowance avec la valeur que veut stake l'utilisateur
+      await DAIContract.methods.approve(DAIStakeContract.options.address, parseInt(inputValue)).send({ from: accounts[0] });
+      // On stake
+      const receipt = await DAIStakeContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
+      // On recup l'event et mémorise dans le state
+      const returnedValues = receipt.events.DepositRegistered.returnValues;
+      console.log(returnedValues);
+      dispatch({ type: 'DEPOSIT_EVENT', event: receipt.events.DepositRegistered.returnValues });
+      alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
+    } else {
+      // Si l'allowance est suffisante on stake directement
+      const receipt = await DAIStakeContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
+      // On recup l'event et mémorise dans le state
+      const returnedValues = receipt.events.DepositRegistered.returnValues;
+      console.log(returnedValues);
+      dispatch({ type: 'DEPOSIT_EVENT', event: receipt.events.DepositRegistered.returnValues });
+      alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
+    }
+
+    const totalStaked = await DAIStakeContract.methods.getTotalStaked().call({ from: accounts[0] });
+    const balanceStaked = await DAIStakeContract.methods.getStakedBalance(accounts[0]).call({ from: accounts[0] });
+
+    console.log(`total staked : ${totalStaked}`);
+    console.log(`balance staked : ${balanceStaked}`);
+
     dispatch({ type: 'STAKE', token: token });
   };
+
+  const handleDaiFaucet = async () => {
+    const DAIContract = findContract(artifact, contract, networkID, "DAI");
+    await DAIContract.methods.faucet(accounts[0], Web3.utils.toBN(5000000000000000000)).send({ from: accounts[0] });
+  }
 
   return (
     <section className="staking">
@@ -27,6 +73,7 @@ function Staking() {
         <Header.Subheader className="hero-subtitle">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, fuga.
         </Header.Subheader>
+        <Button onClick={handleDaiFaucet}>DAI FAUCET</Button>
       </Header>
 
       <Card className="staking-item" raised centered>

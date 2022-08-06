@@ -1,0 +1,9 @@
+@use 'src/styles/vars';
+
+.staking-history {
+  width: 100%;
+  height: 100%;
+  padding: 2em;
+  background-color: vars.$light-gray;
+  text-align: center;
+}

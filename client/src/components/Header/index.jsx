@@ -1,12 +1,36 @@
 // == Import
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Icon, List, Button } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 import { useEth } from "../../contexts/EthContext";
+import findContract from '../../selectors/findContract';
 import './header.scss';
 
 // == Composant
 function Header() {
-  const { state: { accounts }} = useEth();
+  const dispatch = useDispatch();
+  const { state: { accounts, artifact, contract, networkID } } = useEth();
+
+  useEffect(() => {
+    async function loadDepositEvents() {
+      if (contract) {
+        const DAIStakeContract = findContract(artifact, contract, networkID, "DAIStake");
+        const depositEvents = await DAIStakeContract.getPastEvents('DepositRegistered', {fromBlock: 0, toBlock: "latest"});
+        console.log(depositEvents);
+        const cleanedDepositEvents = depositEvents.map((event) => {
+          return {
+            userAddress: event.returnValues.userAddress,
+            amount: event.returnValues.amount,
+            lastDeposit: event.returnValues.lockedUntil,
+          }
+        })
+        dispatch({ type: 'GET_PAST_DEPOSIT_EVENTS', events: cleanedDepositEvents });
+      }
+    };
+
+    loadDepositEvents();
+  }, [contract]);
 
   return (
     <header className="landing-header">
@@ -45,6 +69,14 @@ function Header() {
               to="/rewards"
             >
               Rewards
+            </NavLink>
+          </List.Item>
+          <List.Item>
+            <NavLink
+              className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link')}
+              to="/history"
+            >
+              History
             </NavLink>
           </List.Item>
         </List>
