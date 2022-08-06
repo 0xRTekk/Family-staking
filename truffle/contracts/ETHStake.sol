@@ -43,15 +43,14 @@ contract ETHStake {
     function updatePendingRewards(uint _stakes, uint _from, address _userAddress) internal{
         // calculating nbDay since deposit
         uint nbDay = (block.timestamp - _from) / 60 / 60 / 24;
-        // APR = 3.9%/AN soit 0.01% jour
-        uint dummyETHValue = 1980;
-        uint userStakeValue = dummyETHValue/_stakes;
+        uint FAMValue = 7500000000000000000; // Converted to WEI
+        uint ETHValue = 1500000000000000000000; // DummyValue
+        // FAMValue / (NbJour * (0,01% * ((ETHValue * _stakes) / 10^18)))
+        uint FAMReward = ( ( ( nbDay * ( ( ( ETHValue * _stakes ) / 1000000000000000000 ) / 10000 ) ) * 1000000000000000000 ) / FAMValue );
+        // Updating user pending balance
+        pendingRewards[_userAddress] += FAMReward;
 
-        // Calculating reward and updating the user account
-        uint reward = (nbDay * (userStakeValue*100)) / 100;
-        pendingRewards[_userAddress] += reward;
-
-        emit UpdatedRewards(_userAddress, reward);
+        emit UpdatedRewards(_userAddress, FAMReward);
     }
 
     /**
