@@ -11,7 +11,8 @@ import '../node_modules/@openzeppelin/contracts/access/Ownable.sol';
 * @notice This contract is used to create FAM 
 */
  
-contract FAM is ERC20, Ownable {
+contract Fam is ERC20, Ownable {
+
 
 	// events
 	event FamTransfered(address recipient, uint amount);
@@ -19,7 +20,7 @@ contract FAM is ERC20, Ownable {
     // Constructor
 
 	constructor() ERC20('Family Token', 'FAM') {
-		_mint(msg.sender, 100 * 10 ** decimals());
+		//_mint(msg.sender, 100 * 10 ** decimals());
 	}
 	
 	/** 

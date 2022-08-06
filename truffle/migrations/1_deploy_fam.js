@@ -1,5 +1,5 @@
-const Fam = artifacts.require("FAM");
+const Fam = artifacts.require("Fam");
 
-module.exports = async function (deployer, _network, accounts) {
+module.exports = async function (deployer, _network) {
   await deployer.deploy(Fam);
 };

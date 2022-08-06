@@ -1,22 +1,20 @@
 const FamStack = artifacts.require('FamStack');
+const Fam = artifacts.require("Fam");
 
 const { BN, expectRevert } = require('@openzeppelin/test-helpers');
 const { expect, assert } = require('chai');
 
 
-contract('TEST Staking FAM', ([owner, client]) => {
+contract('TEST Staking FAM', ([owner,client]) => {
     
 
-   describe('Tests : FAM stacking and withdrawal', () => {
+   describe('Tests : FAM staking and withdrawal', () => {
 
       before (async () => {
-        FamStackInstance = await FamStack.new({ from : owner});
+        FamInstance = await Fam.new();
+        FamStackInstance = await FamStack.new(FamInstance.address);
+        console.log(FamInstance.address);
       })
-
-      it("should have a balance of 0 FAM" , async () => {
-            let contractBalance = await balanceOf(FamStackInstance.address);
-            assert.equal(contractBalance, 0);
-      });
 
       it("should allow deposit of FAM", async ()=> {
             const deposit = await FamStackInstance.deposit({from: client, value: new {BN:50}});
@@ -27,7 +25,11 @@ contract('TEST Staking FAM', ([owner, client]) => {
       });
 
       it ("should now hold 50 FAM", async () => {
-            let contractBalance = await balance(FamStackInstance.address);
+            const deposit = await FamStackInstance.deposit({from: client, value: new {BN:50}});
+            expectRevert(deposit, "StackRegistered", {
+                _amount: 50
+            });
+            let contractBalance = await FamStackInstance.balance({from: client});
             assert.equal(contractBalance, BN(50));
       });
       

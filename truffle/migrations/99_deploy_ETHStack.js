@@ -1,6 +1,6 @@
-const ETHStack = artifacts.require("ETHStack");
+const ETHStake = artifacts.require("ETHStake");
 
 module.exports = async (deployer) => {
-  await deployer.deploy(ETHStack);
+  await deployer.deploy(ETHStake);
 };
 

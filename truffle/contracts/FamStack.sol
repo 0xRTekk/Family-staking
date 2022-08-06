@@ -5,7 +5,7 @@ pragma solidity 0.8.15;
 
 import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./FAM.sol";
+import "./Fam.sol";
 
 
 /**

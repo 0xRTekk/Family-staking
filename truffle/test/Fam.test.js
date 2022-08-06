@@ -1,4 +1,4 @@
-const Fam = artifacts.require("FAM");
+const Fam = artifacts.require("Fam");
 const { BN } = require('@openzeppelin/test-helpers');
 
 const {expect} = require('chai')
