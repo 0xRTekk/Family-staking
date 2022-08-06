@@ -33,10 +33,10 @@ function Header() {
           </List.Item>
           <List.Item disabled>
             <NavLink
-              className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link')}
-              to="/earn"
+              className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link menu-link--disabled')}
+              to="/liquidity"
             >
-              Earn
+              Liquidity pools <span className="menu-link--coming-soon">soon</span>
             </NavLink>
           </List.Item>
           <List.Item>

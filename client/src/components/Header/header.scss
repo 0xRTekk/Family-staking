@@ -28,6 +28,20 @@
         font-weight: bold;
         color: vars.$flash-color;
       }
+
+      &--coming-soon {
+        font-size: 0.6em;
+        margin-left: 0.3em;
+        border: 1px solid vars.$flash-color;
+        border-radius: 10px;
+        padding: 0.3em 0.5em;
+        color: vars.$flash-color;
+        background-color: white;
+      }
+
+      &--disabled {
+        color: rgba(0, 0, 0, 0.6);
+      }
     }
   }
 }
