@@ -27,7 +27,7 @@ function Rewards() {
                   <p>152 $</p>
                 </div>
                 <div className="rewards-FAM-earned">
-                  <p><strong>FAM earned</strong></p>
+                  <p><strong>Estimated FAM to earn</strong></p>
                   <p>0.5 FAM</p>
                   <p>50 $</p>
                 </div>
@@ -54,7 +54,7 @@ function Rewards() {
                   <p>335 $</p>
                 </div>
                 <div className="rewards-FAM-earned">
-                  <p><strong>FAM earned</strong></p>
+                  <p><strong>Estimated FAM to earn</strong></p>
                   <p>13 FAM</p>
                   <p>230 $</p>
                 </div>
@@ -81,7 +81,7 @@ function Rewards() {
                   <p>25 $</p>
                 </div>
                 <div className="rewards-FAM-earned">
-                  <p><strong>FAM earned</strong></p>
+                  <p><strong>Estimated FAM to earn</strong></p>
                   <p>13 FAM</p>
                   <p>230 $</p>
                 </div>
