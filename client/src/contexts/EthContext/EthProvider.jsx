@@ -12,11 +12,17 @@ function EthProvider({ children }) {
         const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
         const accounts = await web3.eth.requestAccounts();
         const networkID = await web3.eth.net.getId();
-        const { abi } = artifact;
-        let address, contract;
+        // const { abi } = artifact;
+        let address = [];
+        let contract = [];
         try {
-          address = artifact.networks[networkID].address;
-          contract = new web3.eth.Contract(abi, address);
+          artifact.forEach((item) => {
+            const newAddress = item.networks[networkID].address;
+            address.push(newAddress);
+            contract.push(new web3.eth.Contract(item.abi, newAddress));
+          })
+          // address = artifact.networks[networkID].address;
+          // contract = new web3.eth.Contract(abi, address);
         } catch (err) {
           console.error(err);
         }
@@ -30,7 +36,13 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = require("../../contracts/SimpleStorage.json");
+        const artifact = [
+          require("../../contracts/DAI.json"),
+          require("../../contracts/DAIStake.json"),
+          // ...
+          // Others contracts here
+          // ...
+        ];
         init(artifact);
       } catch (err) {
         console.error(err);
