@@ -25,6 +25,10 @@ contract('Test Staking ETH', accounts => {
             assert.equal(contractBalance, 0);
         });
 
+        it("... should forbid to deposit less than 0,01ETH (10000000000000000 WEI)", async () => {
+            await expectRevert(ETHStakeInstance.deposit({from: _user1, value: 100000000000}), "Minimum deposit is 0.01 ETH");
+        });
+
         it("... should allow to deposit ETH", async () => {
             const receipt = await ETHStakeInstance.deposit({from: _user1, value: oneEth});
             expectEvent(receipt, "DepositRegistered", {
@@ -60,8 +64,10 @@ contract('Test Staking ETH', accounts => {
                 amount: oneEth
             });
         });
-
         
+        it("... should have emptied the pending rewards of the user", async() => {
+            expect(await ETHStakeInstance.getPendingRewards.call(_user1, {from: _user1})).to.be.bignumber.equal(new BN(0), "PendingRewards still positive after withdraw");
+        });
 
         it("... should now hold 0 ETH again", async () => {
             let contractBalance = await web3.eth.getBalance(ETHStakeInstance.address);
@@ -72,7 +78,7 @@ contract('Test Staking ETH', accounts => {
             expect(await ETHStakeInstance.getBalance.call(_user1)).to.be.bignumber.equal(new BN(0), "Incorrect balance");
         });
 
-        it("... should forbid user to withdrax when their account is empty", async () => {
+        it("... should forbid user to withdraw when their account is empty", async () => {
             await expectRevert(ETHStakeInstance.withdraw(oneEth, {from: _user1}), 'Account is empty');
         });
     });
@@ -88,6 +94,25 @@ contract('Test Staking ETH', accounts => {
                 userAddress: _user1,
                 amount: oneEth
             });
+        });
+
+        
+        it("... should calculate intermediate pendingRewards balance between two deposit", async () => {
+            // Deposit a new amount
+            await ETHStakeInstance.deposit({from: _user1, value: oneEth});
+            // Forwarding time to 10 days later
+            await advanceTimeAndBlock(864000);
+            // Deposit a new amount
+            await ETHStakeInstance.deposit({from: _user1, value: oneEth});
+            // PendingRewards should have been calculated
+            const pendingRewards = await ETHStakeInstance.getPendingRewards(_user1, {from: _user1});
+            expect(pendingRewards).to.be.bignumber.greaterThan(new BN(0), "PendingRewards not calculated");
+            // Forwarding time to 10 days later
+            await advanceTimeAndBlock(864000);
+            // Deposit a new amount
+            await ETHStakeInstance.deposit({from: _user1, value: oneEth});
+            // PendingRewards should have been updated
+            expect(await ETHStakeInstance.getPendingRewards.call(_user1, {from: _user1})).to.be.bignumber.greaterThan(pendingRewards, "PendingRewards not updated")
         });
     });
 });
