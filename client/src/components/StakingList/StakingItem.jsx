@@ -11,7 +11,7 @@ function StakingItem() {
           <Card.Header className="staking-item-title">Ethereum</Card.Header>
           <Card.Meta className="staking-item-meta">Stake any amount of ETH and earn daily staking rewards.</Card.Meta>
           <Card.Description>
-            APR <br/> <strong className="staking-item-apr">3.9%</strong>
+            APR <span className="staking-item-apr-info">estimated for 1 year</span> <br/> <strong className="staking-item-apr">3.9%</strong>
           </Card.Description>
         </Card.Content>
         <Card.Content extra>

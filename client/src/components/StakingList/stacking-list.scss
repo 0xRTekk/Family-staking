@@ -30,6 +30,11 @@
       &-apr {
         color: vars.$primary-color;
       }
+
+      &-apr-info {
+        display: block;
+        font-size: 0.65em;
+      }
     }
   }
 }
