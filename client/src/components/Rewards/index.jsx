@@ -52,7 +52,7 @@ function Rewards() {
                     className="rewards-button"
                     floated='right'
                     as={Link}
-                    to={`/unstake/${token.symbol}`}
+                    to={`/Family-staking/unstake/${token.symbol}`}
                     >
                     Unstake
                   </Button>

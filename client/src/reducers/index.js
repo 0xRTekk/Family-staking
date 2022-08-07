@@ -112,7 +112,7 @@ const reducer = (state = initialState, action = {}) => {
       const tokenToUpdate = state.tokens.find((token) => token.symbol === action.token.symbol);
       // On rajoute le montant a stake
       tokenToUpdate.totalStaked += parseInt(action.token.totalStaked);
-      tokenToUpdate.stakedBalance += parseInt(action.token.stakedBalance);
+      tokenToUpdate.stakedBalance = parseInt(action.token.stakedBalance);
       // Nouvelle version du state.tokens sans le token à rajouter
       const newStateTokens = state.tokens.filter((token) => token.symbol !== action.token.symbol);
       newStateTokens.push(tokenToUpdate);
