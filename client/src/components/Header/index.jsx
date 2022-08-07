@@ -62,7 +62,7 @@ function Header() {
         dispatch({ type: 'GET_PAST_DEPOSIT_EVENTS', events: depositEvents });
       }
     };
-
+    
     async function updateDAIRate(){
       if(contract){
         const DAIStakeContract = findContract(artifact, contract, networkID, "DataFeedDAIUSD");
@@ -87,6 +87,56 @@ function Header() {
       }
     };
 
+    async function loadWithdrawEvents() {
+      if (contract) {
+        // Instances des contracts
+        const DAIStakeContract = findContract(artifact, contract, networkID, "DAIStake");
+        // todo : const FAMStakeContract = findContract(artifact, contract, networkID, "FAMStake");
+        const ETHStakeContract = findContract(artifact, contract, networkID, "ETHStake");
+
+        // Recup des events passés
+        const daiWithdrawEvents = await DAIStakeContract.getPastEvents('WithdrawRegistered', {fromBlock: 0, toBlock: "latest"});
+        // todo : const famWithdrawEvents = await FAMStakeContract.getPastEvents('WithdrawRegistered', {fromBlock: 0, toBlock: "latest"});
+        const ethWithdrawEvents = await ETHStakeContract.getPastEvents('WithdrawRegistered', {fromBlock: 0, toBlock: "latest"});
+
+        // Mise en forme des données dans un tableau plus facilement exploitable
+        let withdrawEvents = [];
+        const cleanedDaiWithdrawEvents = daiWithdrawEvents.map((event) => {
+          return {
+            userAddress: event.returnValues.userAddress,
+            amount: event.returnValues.amount,
+            symbol: "DAI"
+          }
+        });
+        // todo:
+        // const cleanedFamWithdrawEvents = famWithdrawEvents.map((event) => {
+        //   return {
+        //     userAddress: event.returnValues.userAddress,
+        //     amount: event.returnValues.amount,
+        //     symbol: "FAM"
+        //   }
+        // });
+        const cleanedEthWithdrawEvents = ethWithdrawEvents.map((event) => {
+          return {
+            userAddress: event.returnValues.userAddress,
+            amount: event.returnValues.amount,
+            symbol: "ETH"
+          }
+        });
+
+        // On crée un tableau contenant tous les events (tous tokens confondus)
+        withdrawEvents.push(
+          ...cleanedDaiWithdrawEvents,
+          //todo : ...cleanedFamWithdrawEvents ,
+          ...cleanedEthWithdrawEvents
+        );
+        console.log(withdrawEvents);
+      
+        // On mémorise ce tableau dans le store
+        dispatch({ type: 'GET_PAST_WITHDRAW_EVENTS', events: withdrawEvents });
+      }
+    };
+    
     async function loadDAIStats() {
       if (contract) {
         const DAIStakeContract = findContract(artifact, contract, networkID, "DAIStake");
@@ -130,6 +180,7 @@ function Header() {
     };
 
     loadDepositEvents();
+    loadWithdrawEvents();
     loadDAIStats();
     // loadFAMStats();
     loadETHStats();

@@ -3,6 +3,7 @@
 import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./DAI.sol";
+import "./FAM.sol";
 
 pragma solidity 0.8.15;
 
@@ -11,7 +12,7 @@ pragma solidity 0.8.15;
 contract DAIStake {
     // Variables
     IERC20 dai;
-    address FAM;
+    FAM private FAMInstance;
     mapping(address => Stake) stakes;
     mapping(address => uint) pendingRewards;
     uint minDeposit = 10000000000000000;
@@ -27,11 +28,13 @@ contract DAIStake {
     event UpdatedRewards(address userAddress, uint amount);
 
     /**
-     * @dev Must pass the DAI token's address from the kovan network : 0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa to use the ERC20 functions
+     * @dev Can pass the DAI token's address from the kovan network : 0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa to use the ERC20 functions
      * @param _DAI ERC20 DAI token contract address
+     * @param _FAM address of the deployed contract
      */
-    constructor(address _DAI) {
+    constructor(address _DAI, address _FAM) {
         dai = IERC20(_DAI);
+        FAMInstance = FAM(_FAM);
     }
 
     /**
@@ -125,7 +128,7 @@ contract DAIStake {
         // Storing the current date of reference and calculating the lock release
         uint referenceDate = stakes[msg.sender].depositDate;
         uint timeLock = referenceDate + 2 days;
-        // require(block.timestamp >= timeLock, "Deposit is time locked");
+        require(block.timestamp >= timeLock, "Deposit is time locked");
 
         // Updating the user's stake
         stakes[msg.sender].amount = userStake - _amount;
@@ -134,7 +137,9 @@ contract DAIStake {
         updatePendingRewards(userStake, referenceDate, msg.sender);
         uint rewardsToMint = pendingRewards[msg.sender];
         pendingRewards[msg.sender] = 0;
-        // TODO Minting the rewardsToSend to the user
+        
+        // Minting the rewards to the user using the faucet function of the FAM contract
+        FAMInstance.faucet(msg.sender, rewardsToMint);
 
         // Transfering back the amount to the user
         dai.transfer(msg.sender, _amount);
