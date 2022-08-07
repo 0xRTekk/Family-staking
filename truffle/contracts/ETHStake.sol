@@ -70,6 +70,14 @@ contract ETHStake {
     }
 
     /**
+     * @notice Return the total staked DAI tokens 
+     * @dev Calls the balanceOf ERC20 function to return the total staked DAI tokens on this contract 
+     */ 
+    function getTotalStaked() view external returns(uint) {
+        return address(this).balance;
+    }
+
+    /**
      * @notice Return a user pending reward balance
      * @param _userAddress address of the user
      */

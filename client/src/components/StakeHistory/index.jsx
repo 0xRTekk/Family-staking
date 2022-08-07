@@ -28,7 +28,7 @@ function StakeHistory() {
       {depositEvents.map((item) => (
         <Table.Row>
           <Table.Cell>{item.userAddress}</Table.Cell>
-          <Table.Cell>{item.amount}</Table.Cell>
+          <Table.Cell>{item.amount} {item.symbol}</Table.Cell>
       </Table.Row>
       ))}
     </Table.Body>
