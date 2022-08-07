@@ -127,9 +127,6 @@ contract DAIStake {
         uint timeLock = referenceDate + 2 days;
         // require(block.timestamp >= timeLock, "Deposit is time locked");
 
-        // Transfer tokens to user's address
-        dai.transferFrom(address(this), msg.sender, _amount);
-
         // Updating the user's stake
         stakes[msg.sender].amount = userStake - _amount;
 
@@ -140,7 +137,8 @@ contract DAIStake {
         // TODO Minting the rewardsToSend to the user
 
         // Transfering back the amount to the user
-        payable(msg.sender).transfer(_amount);
+        dai.transfer(msg.sender, _amount);
+        
         // TODO Error management
 
         emit WithdrawRegistered(msg.sender, _amount);
