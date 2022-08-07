@@ -21,7 +21,6 @@ function StakeHistory() {
       <Table.Row>
         <Table.HeaderCell>User address</Table.HeaderCell>
         <Table.HeaderCell>Amount</Table.HeaderCell>
-        <Table.HeaderCell>Date</Table.HeaderCell>
       </Table.Row>
     </Table.Header>
 
@@ -30,7 +29,6 @@ function StakeHistory() {
         <Table.Row>
           <Table.Cell>{item.userAddress}</Table.Cell>
           <Table.Cell>{item.amount}</Table.Cell>
-          <Table.Cell>{item.lastDeposit}</Table.Cell>
       </Table.Row>
       ))}
     </Table.Body>

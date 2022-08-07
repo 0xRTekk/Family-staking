@@ -33,30 +33,44 @@ function Staking() {
 
     // Si l'allowance n'est pas suffisante
     if (allowance < parseInt(inputValue)) {
+
       // On définit la valeur de l'allowance avec la valeur que veut stake l'utilisateur
       await DAIContract.methods.approve(DAIStakeContract.options.address, parseInt(inputValue)).send({ from: accounts[0] });
+      
       // On stake
       const receipt = await DAIStakeContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
-      // On recup l'event et mémorise dans le state
+
+      // On recup l'event
       const returnedValues = receipt.events.DepositRegistered.returnValues;
-      console.log(returnedValues);
-      dispatch({ type: 'DEPOSIT_EVENT', event: receipt.events.DepositRegistered.returnValues });
+      // On le clean
+      const cleanedDepositEvent = {
+          userAddress: returnedValues.userAddress,
+          amount: returnedValues.amount,
+      }
+      // Et on le mémorise dans le store
+      dispatch({ type: 'DEPOSIT_EVENT', event: cleanedDepositEvent });
+
+      // Un p'tit message pour notifier l'utilisateur
       alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
+
     } else {
+
       // Si l'allowance est suffisante on stake directement
       const receipt = await DAIStakeContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
-      // On recup l'event et mémorise dans le state
+
+      // On recup l'event
       const returnedValues = receipt.events.DepositRegistered.returnValues;
-      console.log(returnedValues);
-      dispatch({ type: 'DEPOSIT_EVENT', event: receipt.events.DepositRegistered.returnValues });
+      // On le clean
+      const cleanedDepositEvent = {
+          userAddress: returnedValues.userAddress,
+          amount: returnedValues.amount,
+      }
+      // Et on le mémorise dans le store
+      dispatch({ type: 'DEPOSIT_EVENT', event: cleanedDepositEvent });
+
+      // Un p'tit message pour notifier l'utilisateur
       alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
     }
-
-    const totalStaked = await DAIStakeContract.methods.getTotalStaked().call({ from: accounts[0] });
-    const balanceStaked = await DAIStakeContract.methods.getStakedBalance(accounts[0]).call({ from: accounts[0] });
-
-    console.log(`total staked : ${totalStaked}`);
-    console.log(`balance staked : ${balanceStaked}`);
 
     dispatch({ type: 'STAKE', token: token });
   };
@@ -86,8 +100,8 @@ function Staking() {
           <Card.Description>
             <div className="staking-datas">
               <div className="staking-datas-total-stake">
-                <p>Total staked</p>
-                <p>{tokenToDisplay.totalStaked} {tokenToDisplay.symbol}</p>
+                <p>Your staked balance</p>
+                <p>{tokenToDisplay.stakedBalance} {tokenToDisplay.symbol}</p>
               </div>
               <div className="staking-datas-price">
                 <p>Exchange rate</p>
