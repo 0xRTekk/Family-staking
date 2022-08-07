@@ -18,77 +18,76 @@ contract FAMStake {
     /// variables
 
     IERC20 fam;
-    mapping (address => bool) public rewardClaimed;
-    uint  public start;
-    uint public end;
-    mapping (address => Stake) stakeBalance;
 
+    /// someones address -> how much they staked;
+    mapping (address => Stake) stakeBalances;
+
+    uint256 public totalSupply;
+
+    /// someones address -> who claimed they reward;
+    mapping (address => bool) public rewardClaimed;
+    
+    /// struct of an account 
       struct Stake {
         uint amount;
-        uint lastDistribution;
+        uint depositDate;
     } 
 
     /// Events
    
-    event StackRegistered( uint _amount);
-    event WithdrawRegistered ( uint _amount);
+    event DepositRegistered(address userAddress, uint amount);
+    event WithdrawRegistered(address userAddress, uint amount);
+    event UpdatedRewards(address userAddress, uint amount);
 
     /// Constructor
+
+    /**
+     * @dev Require the address of the FAM token contract to be able to mint FAM to users
+     * @param _FAM address of the deployed contract
+     */
 
     constructor (address _FAM) {
         fam = IERC20(_FAM);
         
     }
 
-        function balance(address _add) public view returns (uint256) {
-        return stakeBalance[_add].amount;
+        function balance(address _addr) public view returns (uint256) {
+        return stakeBalances[_addr].amount;
     }
 
     /**
     @dev create a pool and calculate the reward for the stacker
      */
     
-    function deposit(uint256 _amount) public payable {
-        require(_amount > 0, "Amount cannot be 0");
-        require(fam.balanceOf(msg.sender) >= _amount, "Your balance is null");
-        fam.transferFrom(msg.sender, address(this), _amount);
-        emit StackRegistered( _amount);
+    function deposit() external payable {
+        require(msg.value > 0, "Amount cannot be 0");
+        uint currentStake = stakeBalances[msg.sender].amount;
+        stakeBalances[msg.sender].amount = currentStake + msg.value;
+        totalSupply = totalSupply + msg.value;
+        bool success = fam.transferFrom(msg.sender, address(this), msg.value);
+        require(success, "Failed");
+        emit DepositRegistered(msg.sender, msg.value);
     }
 
-     /**
-    @dev allow to deposit all assets
-     */
-
-
-    function depositAll() public payable {
-        deposit(
-            fam.balanceOf(msg.sender)
-        );
-    }
+     
+   
 
      /**
     @dev allow the stacker to withdraw some stacked money 
-    @notice require time to be minimun two days after the stack
      */
 
 
-    function withdraw( uint256 _amount) public {
-        require(block.timestamp >= end, 'too early');
-        fam.transfer(msg.sender, _amount);
-        emit WithdrawRegistered (  _amount);
+    function withdraw( uint256 _amount) external {
+         require(_amount < totalSupply, "Amount cannot be 0");
+         uint userStake = stakeBalances[msg.sender].amount;
+        stakeBalances[msg.sender].amount = userStake - _amount;
+        totalSupply = totalSupply - _amount;
+        bool success = fam.transfer(msg.sender, _amount);
+        require(success, "Something went wrong");
+        emit WithdrawRegistered(msg.sender, _amount);
     }
 
-    /**
-    @dev allow the stacker to withdraw  all stacked money
-    @notice depends of fonction withdraw conditions
-     */
 
-
-    function withdrawAll(address _add) public {
-        require(rewardClaimed[msg.sender] == false, 'you already received your reward');
-
-        withdraw(stakeBalance[_add].amount);
-        rewardClaimed [msg.sender] = true;
-    }
+    
 
 }

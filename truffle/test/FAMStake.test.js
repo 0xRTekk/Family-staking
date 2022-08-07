@@ -18,7 +18,7 @@ contract('TEST Staking FAM', ([owner, client]) => {
 
             FAMInstance = await FAM.new();
             FAMStakeInstance = await FAMStake.new(FAMInstance.address);
-            await FAMInstance.authorize(ETHStakeInstance.address);
+            await FAMInstance.authorize(FAMStakeInstance.address);
             console.log(FAMInstance.address);
             console.log(1);
         })
