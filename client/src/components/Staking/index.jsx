@@ -149,10 +149,13 @@ function Staking() {
                 <p>Annual percentage rate</p>
                 <p>{tokenToDisplay.apr * 100}%</p>
               </div>
-              <div className="staking-datas-estimated-rewards">
-                <p>Estimated rewards</p>
-                <p>{Web3.utils.fromWei(Web3.utils.toBN(tokenToDisplay.estimatedFAMRewards), 'ether')}FAM</p>
-              </div>
+              {
+                // <div className="staking-datas-estimated-rewards">
+                //  <p>Estimated rewards</p>
+                //  <p>{Web3.utils.fromWei(Web3.utils.toBN(tokenToDisplay.estimatedFAMRewards), 'ether')}FAM</p>
+                // </div>
+              }
+              
             </div>
           </Card.Description>
           <Button fluid color='purple' type="submit" className="staking-item-button">
