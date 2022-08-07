@@ -13,8 +13,19 @@ import '../node_modules/@openzeppelin/contracts/access/Ownable.sol';
  
 contract FAM is ERC20, Ownable {
 
+	mapping(address => bool) private authorizedContract;
+
 	// events
 	event FamTransfered(address recipient, uint amount);
+
+	// modifiers
+	modifier onlyAuthorized(){
+		require(
+			authorizedContract[msg.sender] || msg.sender == owner(),
+			"Caller is not authorized to execute this function"
+		);
+		_;
+	}
     
     // Constructor
 
@@ -23,11 +34,21 @@ contract FAM is ERC20, Ownable {
 	}
 	
 	/** 
-	@dev fonction faucet pour créer des Fam tokens
-	*/
-	function faucet(address recipient, uint amount) external onlyOwner {
+	 * @dev fonction faucet pour créer des Fam tokens
+	 * @param recipient recipient of the mint
+	 * @param amount amount to mint
+	 */
+	function faucet(address recipient, uint amount) external onlyAuthorized {
 		_mint(recipient, amount);
 		emit FamTransfered(recipient, amount);
+	}
+
+	/**
+	 * @dev authorizes specifics contract to mint 
+	 * @param _contract address of the trusted contract
+	 */
+	function authorize(address _contract) external onlyOwner {
+		authorizedContract[_contract] = true;
 	}
 
     /** 
