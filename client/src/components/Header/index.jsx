@@ -17,12 +17,12 @@ function Header() {
       if (contract) {
         // Instances des contracts
         const DAIStakeContract = findContract(artifact, contract, networkID, "DAIStake");
-        // todo : const FAMStakeContract = findContract(artifact, contract, networkID, "FAMStake");
+        const FAMStakeContract = findContract(artifact, contract, networkID, "FAMStake");
         const ETHStakeContract = findContract(artifact, contract, networkID, "ETHStake");
 
         // Recup des events passés
         const daiDepositEvents = await DAIStakeContract.getPastEvents('DepositRegistered', {fromBlock: 0, toBlock: "latest"});
-        // todo : const famDepositEvents = await FAMStakeContract.getPastEvents('DepositRegistered', {fromBlock: 0, toBlock: "latest"});
+        const famDepositEvents = await FAMStakeContract.getPastEvents('DepositRegistered', {fromBlock: 0, toBlock: "latest"});
         const ethDepositEvents = await ETHStakeContract.getPastEvents('DepositRegistered', {fromBlock: 0, toBlock: "latest"});
 
         // Mise en forme des données dans un tableau plus facilement exploitable
@@ -34,14 +34,13 @@ function Header() {
             symbol: "DAI"
           }
         });
-        // todo:
-        // const cleanedFamDepositEvents = famDepositEvents.map((event) => {
-        //   return {
-        //     userAddress: event.returnValues.userAddress,
-        //     amount: event.returnValues.amount,
-        //     symbol: "FAM"
-        //   }
-        // });
+        const cleanedFamDepositEvents = famDepositEvents.map((event) => {
+          return {
+            userAddress: event.returnValues.userAddress,
+            amount: event.returnValues.amount,
+            symbol: "FAM"
+          }
+        });
         const cleanedEthDepositEvents = ethDepositEvents.map((event) => {
           return {
             userAddress: event.returnValues.userAddress,
@@ -53,7 +52,7 @@ function Header() {
         // On crée un tableau contenant tous les events (tous tokens confondus)
         depositEvents.push(
           ...cleanedDaiDepositEvents,
-          //todo : ...cleanedFamDepositEvents ,
+          ...cleanedFamDepositEvents ,
           ...cleanedEthDepositEvents
         );
         // console.log(depositEvents);
@@ -91,12 +90,12 @@ function Header() {
       if (contract) {
         // Instances des contracts
         const DAIStakeContract = findContract(artifact, contract, networkID, "DAIStake");
-        // todo : const FAMStakeContract = findContract(artifact, contract, networkID, "FAMStake");
+        const FAMStakeContract = findContract(artifact, contract, networkID, "FAMStake");
         const ETHStakeContract = findContract(artifact, contract, networkID, "ETHStake");
 
         // Recup des events passés
         const daiWithdrawEvents = await DAIStakeContract.getPastEvents('WithdrawRegistered', {fromBlock: 0, toBlock: "latest"});
-        // todo : const famWithdrawEvents = await FAMStakeContract.getPastEvents('WithdrawRegistered', {fromBlock: 0, toBlock: "latest"});
+        const famWithdrawEvents = await FAMStakeContract.getPastEvents('WithdrawRegistered', {fromBlock: 0, toBlock: "latest"});
         const ethWithdrawEvents = await ETHStakeContract.getPastEvents('WithdrawRegistered', {fromBlock: 0, toBlock: "latest"});
 
         // Mise en forme des données dans un tableau plus facilement exploitable
@@ -108,14 +107,13 @@ function Header() {
             symbol: "DAI"
           }
         });
-        // todo:
-        // const cleanedFamWithdrawEvents = famWithdrawEvents.map((event) => {
-        //   return {
-        //     userAddress: event.returnValues.userAddress,
-        //     amount: event.returnValues.amount,
-        //     symbol: "FAM"
-        //   }
-        // });
+        const cleanedFamWithdrawEvents = famWithdrawEvents.map((event) => {
+          return {
+            userAddress: event.returnValues.userAddress,
+            amount: event.returnValues.amount,
+            symbol: "FAM"
+          }
+        });
         const cleanedEthWithdrawEvents = ethWithdrawEvents.map((event) => {
           return {
             userAddress: event.returnValues.userAddress,
@@ -127,7 +125,7 @@ function Header() {
         // On crée un tableau contenant tous les events (tous tokens confondus)
         withdrawEvents.push(
           ...cleanedDaiWithdrawEvents,
-          //todo : ...cleanedFamWithdrawEvents ,
+          ...cleanedFamWithdrawEvents ,
           ...cleanedEthWithdrawEvents
         );
         console.log(withdrawEvents);
@@ -182,7 +180,7 @@ function Header() {
     loadDepositEvents();
     loadWithdrawEvents();
     loadDAIStats();
-    // loadFAMStats();
+    loadFAMStats();
     loadETHStats();
     updateDAIRate();
     updateETHRate();
