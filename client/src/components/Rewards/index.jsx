@@ -35,11 +35,13 @@ function Rewards() {
                       <p>{Web3.utils.fromWei(Web3.utils.toBN(token.totalStaked), 'ether')} ETH</p>
                       <p>{Web3.utils.fromWei(Web3.utils.toBN(token.totalStaked), 'ether') * token.price} $</p>
                     </div>
-                    <div className="rewards-FAM-earned">
-                      <p><strong>Estimated FAM to earn</strong></p>
-                      <p>{Web3.utils.fromWei(Web3.utils.toBN(token.earnedFAM), 'ether')} FAM</p>
-                      <p>{Web3.utils.fromWei(Web3.utils.toBN(token.earnedFAM), 'ether') * FAM.price} $</p>
-                    </div>
+                    {
+                      // <div className="rewards-FAM-earned">
+                      //   <p><strong>Estimated FAM to earn</strong></p>
+                      //   <p>{Web3.utils.fromWei(Web3.utils.toBN(token.earnedFAM), 'ether')} FAM</p>
+                      //   <p>{Web3.utils.fromWei(Web3.utils.toBN(token.earnedFAM), 'ether') * FAM.price} $</p>
+                      // </div>
+                  }
                     <div className="rewards-FAM-price">
                       <p><strong>FAM price</strong></p>
                       <p>{FAM.price} $</p>
