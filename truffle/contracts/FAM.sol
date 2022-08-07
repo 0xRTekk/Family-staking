@@ -25,7 +25,7 @@ contract FAM is ERC20, Ownable {
 	/** 
 	@dev fonction faucet pour créer des Fam tokens
 	*/
-	function faucet(address recipient, uint amount) external onlyOwner {
+	function faucet(address recipient, uint amount) external {
 		_mint(recipient, amount);
 		emit FamTransfered(recipient, amount);
 	}

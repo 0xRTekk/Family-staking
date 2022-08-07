@@ -23,40 +23,72 @@ function Staking() {
   };
 
   const handleStake = async () => {
+    let TokenContract;
+    let TokenStakingContract;
+    let DAIContract;
+    let FAMContract;
+    let DAIStakeContract;
+    let ETHStakeContract;
+    let FAMStakeContract;
 
     // On recup les instances des contracts à utiliser
-    const DAIContract = findContract(artifact, contract, networkID, "DAI");
-    const DAIStakeContract = findContract(artifact, contract, networkID, "DAIStake");
+    if (token === "DAI") {
+      TokenContract = findContract(artifact, contract, networkID, "DAI");
+      TokenStakingContract = findContract(artifact, contract, networkID, "DAIStake");
+    } else if (token === "ETH") {
+      TokenStakingContract = findContract(artifact, contract, networkID, "ETHStake");
+    } else if (token === "FAM") {
+      TokenContract = findContract(artifact, contract, networkID, "FAM");
+      TokenStakingContract = findContract(artifact, contract, networkID, "FAMStake");
+    }
     
-    // On recup l'allowance du contract de staking sur les tokens de l'account
-    const allowance = await DAIContract.methods.allowance(accounts[0], DAIStakeContract.options.address).call({ from: accounts[0] });
+    //! La gestion de l'allowance n'est pas applicable si on send de l'ETH
+    if (token !== "ETH") {
+      // On recup l'allowance du contract de staking sur les tokens de l'account
+      const allowance = await TokenContract.methods.allowance(accounts[0], TokenStakingContract.options.address).call({ from: accounts[0] });
 
-    // Si l'allowance n'est pas suffisante
-    if (allowance < parseInt(inputValue)) {
+      // Si l'allowance n'est pas suffisante
+      if (allowance < parseInt(inputValue)) {
 
-      // On définit la valeur de l'allowance avec la valeur que veut stake l'utilisateur
-      await DAIContract.methods.approve(DAIStakeContract.options.address, parseInt(inputValue)).send({ from: accounts[0] });
-      
-      // On stake
-      const receipt = await DAIStakeContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
+        // On définit la valeur de l'allowance avec la valeur que veut stake l'utilisateur
+        await TokenContract.methods.approve(TokenStakingContract.options.address, parseInt(inputValue)).send({ from: accounts[0] });
+        
+        // On stake
+        const receipt = await TokenStakingContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
 
-      // On recup l'event
-      const returnedValues = receipt.events.DepositRegistered.returnValues;
-      // On le clean
-      const cleanedDepositEvent = {
-          userAddress: returnedValues.userAddress,
-          amount: returnedValues.amount,
+        // On recup l'event
+        const returnedValues = receipt.events.DepositRegistered.returnValues;
+        // On le clean
+        const cleanedDepositEvent = {
+            userAddress: returnedValues.userAddress,
+            amount: returnedValues.amount,
+        }
+        // Et on le mémorise dans le store
+        dispatch({ type: 'DEPOSIT_EVENT', event: cleanedDepositEvent });
+
+        // Un p'tit message pour notifier l'utilisateur
+        alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
+
+      } else {
+
+        // Si l'allowance est suffisante on stake directement
+        const receipt = await TokenStakingContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
+
+        // On recup l'event
+        const returnedValues = receipt.events.DepositRegistered.returnValues;
+        // On le clean
+        const cleanedDepositEvent = {
+            userAddress: returnedValues.userAddress,
+            amount: returnedValues.amount,
+        }
+        // Et on le mémorise dans le store
+        dispatch({ type: 'DEPOSIT_EVENT', event: cleanedDepositEvent });
+
+        // Un p'tit message pour notifier l'utilisateur
+        alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
       }
-      // Et on le mémorise dans le store
-      dispatch({ type: 'DEPOSIT_EVENT', event: cleanedDepositEvent });
-
-      // Un p'tit message pour notifier l'utilisateur
-      alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
-
     } else {
-
-      // Si l'allowance est suffisante on stake directement
-      const receipt = await DAIStakeContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
+      const receipt = await TokenStakingContract.methods.deposit().send({ from: accounts[0], value: parseInt(inputValue) });
 
       // On recup l'event
       const returnedValues = receipt.events.DepositRegistered.returnValues;
@@ -72,13 +104,20 @@ function Staking() {
       alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
     }
 
-    dispatch({ type: 'STAKE', token: token });
+    // On refresh pour recup les bonnes infos depuis le SM
+    // La recup se fait dans le composant Header
+    window.location.reload();
   };
 
   const handleDaiFaucet = async () => {
     const DAIContract = findContract(artifact, contract, networkID, "DAI");
     await DAIContract.methods.faucet(accounts[0], Web3.utils.toBN(5000000000000000000)).send({ from: accounts[0] });
-  }
+  };
+
+  const handleFamFaucet = async () => {
+    const FAMContract = findContract(artifact, contract, networkID, "FAM");
+    await FAMContract.methods.faucet(accounts[0], Web3.utils.toBN(5000000000000000000)).send({ from: accounts[0] });
+  };
 
   return (
     <section className="staking">
@@ -87,7 +126,9 @@ function Staking() {
         <Header.Subheader className="hero-subtitle">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, fuga.
         </Header.Subheader>
-        <Button onClick={handleDaiFaucet}>DAI FAUCET</Button>
+        {token === "DAI" && <Button onClick={handleDaiFaucet}>DAI FAUCET</Button>}
+        {token === "FAM" && <Button onClick={handleFamFaucet}>FAM FAUCET</Button>}
+        
       </Header>
 
       <Card className="staking-item" raised centered>

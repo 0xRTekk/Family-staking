@@ -37,8 +37,11 @@ function EthProvider({ children }) {
     const tryInit = async () => {
       try {
         const artifact = [
+          require("../../contracts/FAM.json"),
           require("../../contracts/DAI.json"),
           require("../../contracts/DAIStake.json"),
+          require("../../contracts/ETHStake.json"),
+          // require("../../contracts/FAMStake.json"),
           // ...
           // Others contracts here
           // ...
