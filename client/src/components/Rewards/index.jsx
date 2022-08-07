@@ -24,7 +24,7 @@ function Rewards() {
         <Card.Group centered itemsPerRow={1}>
           {tokens.map((token) => {
             return (
-              <Card color='purple'>
+              <Card color='purple' key={token.symbol}>
                 <Card.Content className="rewards-datas-inner">
                   <div className="rewards-datas">
                     <div className="rewards-token">

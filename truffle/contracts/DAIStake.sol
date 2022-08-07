@@ -121,11 +121,11 @@ contract DAIStake {
         uint userStake = stakes[msg.sender].amount;
         require(userStake != 0, "Account is empty");
         require(userStake >= _amount, "Cannot withdraw more than your current balance");
-        require(address(this).balance >= _amount);
+        require(dai.balanceOf(address(this)) >= _amount, "Not enough liquidity");
         // Storing the current date of reference and calculating the lock release
         uint referenceDate = stakes[msg.sender].depositDate;
         uint timeLock = referenceDate + 2 days;
-        require(block.timestamp >= timeLock, "Deposit is time locked");
+        // require(block.timestamp >= timeLock, "Deposit is time locked");
 
         // Transfer tokens to user's address
         dai.transferFrom(address(this), msg.sender, _amount);

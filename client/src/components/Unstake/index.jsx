@@ -3,6 +3,8 @@ import Web3 from 'web3';
 import { Header, Card, Button, Form } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import findContract from '../../selectors/findContract';
+import { useEth } from '../../contexts/EthContext';
 import './unstake.scss';
 
 // == Composant
@@ -12,14 +14,101 @@ function Staking() {
   const tokens = useSelector((state) => state.tokens);
   const inputValue = useSelector((state) => state.unstakeInputValue);
   const tokenToDisplay = tokens.find((item) => item.symbol === token);
+  const { state: { accounts, artifact, contract, networkID } } = useEth();
 
   const handleChange = (evt) => {
     dispatch({ type: 'CHANGE_UNSTAKING_VALUE', value: evt.target.value });
   };
 
-  const handleUnstake = () => {
-    // todo : branchement fonction withdrax. Ne pas oublier la conversion de l'inputValue (ether) en WEI
-    dispatch({ type: 'UNSTAKE', token: token });
+  const handleUnstake = async () => {
+    let TokenContract;
+    let TokenStakingContract;
+
+    // On recup les instances des contracts à utiliser
+    if (token === "DAI") {
+      TokenContract = findContract(artifact, contract, networkID, "DAI");
+      TokenStakingContract = findContract(artifact, contract, networkID, "DAIStake");
+    } else if (token === "ETH") {
+      TokenStakingContract = findContract(artifact, contract, networkID, "ETHStake");
+    } else if (token === "FAM") {
+      TokenContract = findContract(artifact, contract, networkID, "FAM");
+      TokenStakingContract = findContract(artifact, contract, networkID, "FAMStake");
+    }
+    
+    //! La gestion de l'allowance n'est pas applicable si on send de l'ETH
+    if (token !== "ETH") {
+      // On recup et converti l'allowance du contract de staking sur les tokens de l'account
+      let allowance = await TokenContract.methods.allowance(accounts[0], TokenStakingContract.options.address).call({ from: accounts[0] });
+      allowance = Web3.utils.toWei(allowance, 'ether');
+      const value = Web3.utils.toWei(inputValue, 'ether');
+      // console.log(allowance, value);
+
+      // Si l'allowance n'est pas suffisante
+      if (allowance < value) {
+
+        // On définit la valeur de l'allowance avec la valeur que veut stake l'utilisateur
+        await TokenContract.methods.approve(TokenStakingContract.options.address, value).send({ from: accounts[0] });
+        
+        // On unstake
+        const receipt = await TokenStakingContract.methods.withdraw(value).send({ from: accounts[0] });
+
+        // On recup l'event
+        const returnedValues = receipt.events.WithdrawRegistered.returnValues;
+        // On le clean
+        const cleanedWithdrawEvent = {
+            userAddress: returnedValues.userAddress,
+            amount: returnedValues.amount,
+        }
+        console.log(cleanedWithdrawEvent);
+        // Et on le mémorise dans le store
+        // dispatch({ type: 'UNSTAKE', token: token });
+        dispatch({ type: 'WITHDRAW_EVENT', event: cleanedWithdrawEvent });
+
+        // Un p'tit message pour notifier l'utilisateur
+        alert(`Vous avez bien retiré ${inputValue} ${token}`);
+
+      } else {
+
+        // Si l'allowance est suffisante on stake directement
+        const receipt = await TokenStakingContract.methods.withdraw(value).send({ from: accounts[0] });
+
+        // On recup l'event
+        const returnedValues = receipt.events.WithdrawRegistered.returnValues;
+        // On le clean
+        const cleanedWithdrawEvent = {
+            userAddress: returnedValues.userAddress,
+            amount: returnedValues.amount,
+        }
+        console.log(cleanedWithdrawEvent);
+        // Et on le mémorise dans le store
+        // dispatch({ type: 'UNSTAKE', token: token });
+        dispatch({ type: 'WITHDRAW_EVENT', event: cleanedWithdrawEvent });
+
+        // Un p'tit message pour notifier l'utilisateur
+        alert(`Vous avez bien retiré ${inputValue} ${token}`);
+      }
+    } else {
+      const receipt = await TokenStakingContract.methods.deposit().send({ from: accounts[0], value: parseInt(inputValue) });
+
+      // On recup l'event
+      const returnedValues = receipt.events.DepositRegistered.returnValues;
+      // On le clean
+      const cleanedDepositEvent = {
+          userAddress: returnedValues.userAddress,
+          amount: returnedValues.amount,
+      }
+      // Et on le mémorise dans le store
+      dispatch({ type: 'UNSTAKE', token: token });
+      // dispatch({ type: 'DEPOSIT_EVENT', event: cleanedDepositEvent });
+
+      // Un p'tit message pour notifier l'utilisateur
+      alert(`Vous avez bien staké ${inputValue} ${token}`);
+    }
+
+    // On refresh pour recup les bonnes infos depuis le SM
+    // La recup se fait dans le composant Header
+    // window.location.reload();
+
   };
 
   return (
