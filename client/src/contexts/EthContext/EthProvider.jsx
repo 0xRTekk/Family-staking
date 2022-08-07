@@ -41,6 +41,8 @@ function EthProvider({ children }) {
           require("../../contracts/DAI.json"),
           require("../../contracts/DAIStake.json"),
           require("../../contracts/ETHStake.json"),
+          require("../../contracts/DataFeedETHUSD.json"),
+          require("../../contracts/DataFeedDAIUSD.json"),
           // require("../../contracts/FAMStake.json"),
           // ...
           // Others contracts here
