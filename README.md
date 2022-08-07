@@ -15,5 +15,10 @@ FAM
 
 1 Token de reward :
 FAM - valeur fixée à 7,5€
-
 # Lien Github Page
+
+
+# Equipe :
+Maud Hutchinson
+Remy Sulpice
+Yohann Youssouf
