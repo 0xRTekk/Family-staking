@@ -35,13 +35,14 @@ function Staking() {
       TokenContract = findContract(artifact, contract, networkID, "FAM");
       TokenStakingContract = findContract(artifact, contract, networkID, "FAMStake");
     }
-    
+    const tempValue = inputValue.replace(",",".");
+    const value = Web3.utils.toWei(tempValue, 'ether');
     //! La gestion de l'allowance n'est pas applicable si on send de l'ETH
     if (token !== "ETH") {
       // On recup et converti l'allowance du contract de staking sur les tokens de l'account
       let allowance = await TokenContract.methods.allowance(accounts[0], TokenStakingContract.options.address).call({ from: accounts[0] });
       allowance = Web3.utils.toWei(allowance, 'ether');
-      const value = Web3.utils.toWei(inputValue, 'ether');
+      
       // console.log(allowance, value);
 
       // Si l'allowance n'est pas suffisante
@@ -85,7 +86,7 @@ function Staking() {
         alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
       }
     } else {
-      const receipt = await TokenStakingContract.methods.deposit().send({ from: accounts[0], value: parseInt(inputValue) });
+      const receipt = await TokenStakingContract.methods.deposit().send({ from: accounts[0], value: parseInt(value) });
 
       // On recup l'event
       const returnedValues = receipt.events.DepositRegistered.returnValues;
