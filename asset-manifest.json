@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Family-staking/static/css/main.2e154add.chunk.css",
-    "main.js": "/Family-staking/static/js/main.fb62b790.chunk.js",
-    "main.js.map": "/Family-staking/static/js/main.fb62b790.chunk.js.map",
+    "main.js": "/Family-staking/static/js/main.099b120c.chunk.js",
+    "main.js.map": "/Family-staking/static/js/main.099b120c.chunk.js.map",
     "runtime-main.js": "/Family-staking/static/js/runtime-main.e52ac1d0.js",
     "runtime-main.js.map": "/Family-staking/static/js/runtime-main.e52ac1d0.js.map",
     "static/css/2.f1b958ee.chunk.css": "/Family-staking/static/css/2.f1b958ee.chunk.css",
@@ -12,7 +12,7 @@
     "static/css/2.f1b958ee.chunk.css.map": "/Family-staking/static/css/2.f1b958ee.chunk.css.map",
     "static/css/main.2e154add.chunk.css.map": "/Family-staking/static/css/main.2e154add.chunk.css.map",
     "static/js/2.ce9ffcae.chunk.js.LICENSE.txt": "/Family-staking/static/js/2.ce9ffcae.chunk.js.LICENSE.txt",
-    "static/js/main.fb62b790.chunk.js.LICENSE.txt": "/Family-staking/static/js/main.fb62b790.chunk.js.LICENSE.txt",
+    "static/js/main.099b120c.chunk.js.LICENSE.txt": "/Family-staking/static/js/main.099b120c.chunk.js.LICENSE.txt",
     "static/media/semantic.min.css": "/Family-staking/static/media/outline-icons.ddae9b1b.woff",
     "static/media/logo-eth.abfed3ce.png": "/Family-staking/static/media/logo-eth.abfed3ce.png"
   },
@@ -21,6 +21,6 @@
     "static/css/2.f1b958ee.chunk.css",
     "static/js/2.ce9ffcae.chunk.js",
     "static/css/main.2e154add.chunk.css",
-    "static/js/main.fb62b790.chunk.js"
+    "static/js/main.099b120c.chunk.js"
   ]
 }
