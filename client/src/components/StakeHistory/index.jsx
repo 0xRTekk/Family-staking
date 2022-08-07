@@ -1,4 +1,5 @@
 // == Import
+import Web3 from 'web3';
 import { useSelector } from 'react-redux';
 import { Header, Table } from 'semantic-ui-react';
 import './stakeHistory.scss';
@@ -21,7 +22,6 @@ function StakeHistory() {
       <Table.Row>
         <Table.HeaderCell>User address</Table.HeaderCell>
         <Table.HeaderCell>Amount</Table.HeaderCell>
-        <Table.HeaderCell>Date</Table.HeaderCell>
       </Table.Row>
     </Table.Header>
 
@@ -29,8 +29,7 @@ function StakeHistory() {
       {depositEvents.map((item) => (
         <Table.Row>
           <Table.Cell>{item.userAddress}</Table.Cell>
-          <Table.Cell>{item.amount}</Table.Cell>
-          <Table.Cell>{item.lastDeposit}</Table.Cell>
+          <Table.Cell>{Web3.utils.fromWei(Web3.utils.toBN(item.amount), 'ether')} {item.symbol}</Table.Cell>
       </Table.Row>
       ))}
     </Table.Body>
