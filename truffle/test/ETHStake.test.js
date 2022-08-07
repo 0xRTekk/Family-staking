@@ -5,6 +5,7 @@ const { web3 } = require('@openzeppelin/test-helpers/src/setup');
 const { latestBlock } = require('@openzeppelin/test-helpers/src/time');
 const { expect, assert } = require('chai');
 const ETHStake = artifacts.require('ETHStake');
+const FAM = artifacts.require('FAM');
 const { advanceTimeAndBlock } = require('./helpers/timeTravelHelper');
 
 contract('Test Staking ETH', accounts => {
@@ -17,7 +18,9 @@ contract('Test Staking ETH', accounts => {
 
     describe('Tests: Eth staking and withdrawal', function () {
         before(async () => {
-            ETHStakeInstance = await ETHStake.new();
+            FAMInstance = await FAM.new();
+            ETHStakeInstance = await ETHStake.new(FAMInstance.address);
+            await FAMInstance.authorize(ETHStakeInstance.address);
         })
 
         it("... should hold 0 ETH at start", async () => {
@@ -85,7 +88,9 @@ contract('Test Staking ETH', accounts => {
 
     describe('Tests: Misc/To do', function () {
         beforeEach(async () => {
-            ETHStakeInstance = await ETHStake.new();
+            FAMInstance = await FAM.new();
+            ETHStakeInstance = await ETHStake.new(FAMInstance.address);
+            await FAMInstance.authorize(ETHStakeInstance.address);
         });
 
         it("... should add value to an account even in case of a send", async () => {
