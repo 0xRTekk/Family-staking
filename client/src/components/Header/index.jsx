@@ -153,7 +153,7 @@ function Header() {
       if (contract) {
         const FAMStakeContract = findContract(artifact, contract, networkID, "FAMStake");
         const totalStaked = await FAMStakeContract.methods.getTotalStaked().call({ from: accounts[0] });
-        const stakedBalance = await FAMStakeContract.methods.getStakedBalance(accounts[0]).call({ from: accounts[0] });
+        const stakedBalance = await FAMStakeContract.methods.getBalance(accounts[0]).call({ from: accounts[0] });
         const token = {
           symbol: "FAM",
           totalStaked: totalStaked,
