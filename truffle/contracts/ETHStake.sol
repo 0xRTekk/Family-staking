@@ -2,6 +2,9 @@
 
 pragma solidity 0.8.15;
 
+import "../node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./FAM.sol";
+
 /// @title Staking contract for ETH
 /// @notice This contract is used to stake ETH through the Family-Staking app
 contract ETHStake {
@@ -14,13 +17,21 @@ contract ETHStake {
         uint depositDate;
     }   
 
-    address FAM;
+    FAM private FAMInstance;
     uint minDeposit = 10000000000000000;
 
     // Events
     event DepositRegistered(address userAddress, uint amount);
     event WithdrawRegistered(address userAddress, uint amount);
     event UpdatedRewards(address userAddress, uint amount);
+
+    /**
+     * @dev Require the address of the FAM token contract to be able to mint FAM to users
+     * @param _FAM address of the deployed contract
+     */
+    constructor(address _FAM) {
+        FAMInstance = FAM(_FAM);
+    }
 
     /**
      * @dev Internal function that register the stake and calculate pending rewards. Used by the stake function and the default receive function. Emits a StakeRegistered event.
@@ -108,8 +119,8 @@ contract ETHStake {
         updatePendingRewards(userStake, referenceDate, msg.sender);
         uint rewardsToMint = pendingRewards[msg.sender];
         pendingRewards[msg.sender] = 0;
-        // TODO Minting the rewardsToSend to the user
-
+        // Minting the rewards to the user using the faucet function of the FAM contract
+        FAMInstance.faucet(msg.sender, rewardsToMint);
         // Transfering back the amount to the user
         payable(msg.sender).transfer(_amount);
         // TODO Error management
