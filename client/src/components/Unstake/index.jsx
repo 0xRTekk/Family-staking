@@ -59,7 +59,8 @@ function Staking() {
 
     // On refresh pour recup les bonnes infos depuis le SM
     // La recup se fait dans le composant Header
-    window.location.reload();
+    window.location.replace("https://remitekky.github.io/Family-staking/");
+    return false;
   };
 
   return (

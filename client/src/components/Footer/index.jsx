@@ -18,13 +18,13 @@ function Footer() {
           <a className="footer-link" target="_blank" href="https://github.com/Remitekky/Family-staking" rel="noreferrer">GitHub</a>
         </List.Item>
         <List.Item>
-          <Link className="footer-link" to="/#">Team</Link>
+          <Link className="footer-link" to="/Family-staking/#">Team</Link>
         </List.Item>
         <List.Item>
-          <Link className="footer-link" to="/#">Term of Use</Link>
+          <Link className="footer-link" to="/Family-staking/#">Term of Use</Link>
         </List.Item>
         <List.Item>
-          <Link className="footer-link" to="/#">Privacy</Link>
+          <Link className="footer-link" to="/Family-staking/#">Privacy</Link>
         </List.Item>
       </List>
 
