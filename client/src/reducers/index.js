@@ -10,6 +10,7 @@ export const initialState = {
       apr: 0.039,
       price: 1602,
       totalStaked: 0,
+      stakedBalance: 0,
       estimatedFAMRewards: 0,
       initialStakingDate: null,
       earnedFAM: 0,
@@ -20,6 +21,7 @@ export const initialState = {
       apr: 0.027,
       price: 1,
       totalStaked: 0,
+      stakedBalance: 0,
       estimatedFAMRewards: 0,
       initialStakingDate: null,
       earnedFAM: 0,
@@ -30,6 +32,7 @@ export const initialState = {
       apr: 0.1,
       price: 17,
       totalStaked: 0,
+      stakedBalance: 0,
       estimatedFAMRewards: 0,
       initialStakingDate: null,
       earnedFAM: 0,
@@ -101,6 +104,22 @@ const reducer = (state = initialState, action = {}) => {
       return {
         ...state,
         depositEvents: action.events,
+      }
+    }
+    case 'UPDATE_STAKED_AMOUNTS': {
+      // On recup le token a update
+      const tokenToUpdate = state.tokens.find((token) => token.symbol === action.token.symbol);
+      // On rajoute le montant a stake
+      tokenToUpdate.totalStaked += parseInt(action.token.totalStaked);
+      tokenToUpdate.stakedBalance += parseInt(action.token.stakedBalance);
+      // Nouvelle version du state.tokens sans le token à rajouter
+      const newStateTokens = state.tokens.filter((token) => token.symbol !== action.token.symbol);
+      newStateTokens.push(tokenToUpdate);
+      return {
+        ...state,
+        tokens: [
+          ...newStateTokens,
+        ],
       }
     }
     default:

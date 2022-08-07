@@ -22,14 +22,29 @@ function Header() {
           return {
             userAddress: event.returnValues.userAddress,
             amount: event.returnValues.amount,
-            lastDeposit: event.returnValues.lockedUntil,
           }
         })
         dispatch({ type: 'GET_PAST_DEPOSIT_EVENTS', events: cleanedDepositEvents });
       }
     };
+    
+    async function loadTotalStaked() {
+      if (contract) {
+        const DAIStakeContract = findContract(artifact, contract, networkID, "DAIStake");
+        const totalStaked = await DAIStakeContract.methods.getTotalStaked().call({ from: accounts[0] });
+        const stakedBalance = await DAIStakeContract.methods.getStakedBalance(accounts[0]).call({ from: accounts[0] });
+        const token = {
+          symbol: "DAI",
+          totalStaked: totalStaked,
+          stakedBalance: stakedBalance
+        };
+        console.log(token);
+        dispatch({ type: 'UPDATE_STAKED_AMOUNTS', token: token });
+      }
+    };
 
     loadDepositEvents();
+    loadTotalStaked();
   }, [contract]);
 
   return (
