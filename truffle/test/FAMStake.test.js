@@ -23,11 +23,11 @@ contract('TEST Staking FAM', ([owner, client]) => {
             console.log(1);
         })
         it("should get balance of Fam ", async () => {
-            await FAMStakeInstance.balance(client);
+            await FAMStakeInstance.getBalance(client);
         })
 
         it("should get balance equal 0", async () => {
-            const userBalance = await FAMStakeInstance.balance(client);
+            const userBalance = await FAMStakeInstance.getBalance(client);
             assert.equal(userBalance, 0);
         })
 
