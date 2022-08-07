@@ -25,7 +25,7 @@ module.exports =  async function (deployer, _network) {
 	await deployer.deploy(DAI);
 	const DAIToken = await DAI.deployed();
 	// Deploying the DAI Staking contract
-	await deployer.deploy(DAIStake, DAIToken.address);
+	await deployer.deploy(DAIStake, DAIToken.address, FAMToken.address);
 	const DAIStakingContract = await DAIStake.deployed();
 
 	// Authorizing the staking contract to mint
