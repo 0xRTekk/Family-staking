@@ -35,80 +35,31 @@ function Staking() {
       TokenStakingContract = findContract(artifact, contract, networkID, "FAMStake");
     }
     
-    //! La gestion de l'allowance n'est pas applicable si on send de l'ETH
-    if (token !== "ETH") {
-      // On recup et converti l'allowance du contract de staking sur les tokens de l'account
-      let allowance = await TokenContract.methods.allowance(accounts[0], TokenStakingContract.options.address).call({ from: accounts[0] });
-      allowance = Web3.utils.toWei(allowance, 'ether');
-      const value = Web3.utils.toWei(inputValue, 'ether');
-      // console.log(allowance, value);
+    
+    // On conversion en WEI
+    const value = Web3.utils.toWei(inputValue, 'ether');
 
-      // Si l'allowance n'est pas suffisante
-      if (allowance < value) {
+    // On unstake
+    const receipt = await TokenStakingContract.methods.withdraw(value).send({ from: accounts[0] });
 
-        // On définit la valeur de l'allowance avec la valeur que veut stake l'utilisateur
-        await TokenContract.methods.approve(TokenStakingContract.options.address, value).send({ from: accounts[0] });
-        
-        // On unstake
-        const receipt = await TokenStakingContract.methods.withdraw(value).send({ from: accounts[0] });
-
-        // On recup l'event
-        const returnedValues = receipt.events.WithdrawRegistered.returnValues;
-        // On le clean
-        const cleanedWithdrawEvent = {
-            userAddress: returnedValues.userAddress,
-            amount: returnedValues.amount,
-        }
-        console.log(cleanedWithdrawEvent);
-        // Et on le mémorise dans le store
-        // dispatch({ type: 'UNSTAKE', token: token });
-        dispatch({ type: 'WITHDRAW_EVENT', event: cleanedWithdrawEvent });
-
-        // Un p'tit message pour notifier l'utilisateur
-        alert(`Vous avez bien retiré ${inputValue} ${token}`);
-
-      } else {
-
-        // Si l'allowance est suffisante on stake directement
-        const receipt = await TokenStakingContract.methods.withdraw(value).send({ from: accounts[0] });
-
-        // On recup l'event
-        const returnedValues = receipt.events.WithdrawRegistered.returnValues;
-        // On le clean
-        const cleanedWithdrawEvent = {
-            userAddress: returnedValues.userAddress,
-            amount: returnedValues.amount,
-        }
-        console.log(cleanedWithdrawEvent);
-        // Et on le mémorise dans le store
-        // dispatch({ type: 'UNSTAKE', token: token });
-        dispatch({ type: 'WITHDRAW_EVENT', event: cleanedWithdrawEvent });
-
-        // Un p'tit message pour notifier l'utilisateur
-        alert(`Vous avez bien retiré ${inputValue} ${token}`);
-      }
-    } else {
-      const receipt = await TokenStakingContract.methods.deposit().send({ from: accounts[0], value: parseInt(inputValue) });
-
-      // On recup l'event
-      const returnedValues = receipt.events.DepositRegistered.returnValues;
-      // On le clean
-      const cleanedDepositEvent = {
-          userAddress: returnedValues.userAddress,
-          amount: returnedValues.amount,
-      }
-      // Et on le mémorise dans le store
-      dispatch({ type: 'UNSTAKE', token: token });
-      // dispatch({ type: 'DEPOSIT_EVENT', event: cleanedDepositEvent });
-
-      // Un p'tit message pour notifier l'utilisateur
-      alert(`Vous avez bien staké ${inputValue} ${token}`);
+    // On recup l'event
+    const returnedValues = receipt.events.WithdrawRegistered.returnValues;
+    // On le clean
+    const cleanedWithdrawEvent = {
+        userAddress: returnedValues.userAddress,
+        amount: returnedValues.amount,
     }
+    // Et on le mémorise dans le store
+    dispatch({ type: 'WITHDRAW_EVENT', event: cleanedWithdrawEvent });
+    // dispatch({ type: 'UNSTAKE', token: token });
+
+    // Un p'tit message pour notifier l'utilisateur
+    alert(`Vous avez bien retiré ${inputValue} ${token}`);
+
 
     // On refresh pour recup les bonnes infos depuis le SM
     // La recup se fait dans le composant Header
-    // window.location.reload();
-
+    window.location.reload();
   };
 
   return (
