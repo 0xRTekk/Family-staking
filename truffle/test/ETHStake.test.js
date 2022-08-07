@@ -6,6 +6,7 @@ const { latestBlock } = require('@openzeppelin/test-helpers/src/time');
 const { expect, assert } = require('chai');
 const ETHStake = artifacts.require('ETHStake');
 const FAM = artifacts.require('FAM');
+const DataFeedETHUSD = artifacts.require('DataFeedETHUSD');
 const { advanceTimeAndBlock } = require('./helpers/timeTravelHelper');
 
 contract('Test Staking ETH', accounts => {
@@ -18,8 +19,9 @@ contract('Test Staking ETH', accounts => {
 
     describe('Tests: Eth staking and withdrawal', function () {
         before(async () => {
+            feedETHUSDInstance = await DataFeedETHUSD.new();
             FAMInstance = await FAM.new();
-            ETHStakeInstance = await ETHStake.new(FAMInstance.address);
+            ETHStakeInstance = await ETHStake.new(FAMInstance.address, feedETHUSDInstance.address);
             await FAMInstance.authorize(ETHStakeInstance.address);
         })
 
@@ -88,8 +90,9 @@ contract('Test Staking ETH', accounts => {
 
     describe('Tests: Misc/To do', function () {
         beforeEach(async () => {
+            feedETHUSDInstance = await DataFeedETHUSD.new();
             FAMInstance = await FAM.new();
-            ETHStakeInstance = await ETHStake.new(FAMInstance.address);
+            ETHStakeInstance = await ETHStake.new(FAMInstance.address, feedETHUSDInstance.address);
             await FAMInstance.authorize(ETHStakeInstance.address);
         });
 

@@ -4,6 +4,7 @@ pragma solidity 0.8.15;
 
 import "../node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./FAM.sol";
+import "./DataFeedETHUSD.sol";
 
 /// @title Staking contract for ETH
 /// @notice This contract is used to stake ETH through the Family-Staking app
@@ -18,6 +19,8 @@ contract ETHStake {
     }   
 
     FAM private FAMInstance;
+    DataFeedETHUSD private ETHUSDFeed;
+
     uint minDeposit = 10000000000000000;
 
     // Events
@@ -29,8 +32,9 @@ contract ETHStake {
      * @dev Require the address of the FAM token contract to be able to mint FAM to users
      * @param _FAM address of the deployed contract
      */
-    constructor(address _FAM) {
+    constructor(address _FAM, address _dataFeed) {
         FAMInstance = FAM(_FAM);
+        ETHUSDFeed = DataFeedETHUSD(_dataFeed);
     }
 
     /**
@@ -63,7 +67,7 @@ contract ETHStake {
         // calculating nbDay since deposit
         uint nbDay = (block.timestamp - _from) / 60 / 60 / 24;
         uint FAMValue = 7500000000000000000; // Converted to WEI
-        uint ETHValue = 1500000000000000000000; // DummyValue
+        uint ETHValue = uint(ETHUSDFeed.getLatestPrice());
         // FAMValue / (NbJour * (0,01% * ((ETHValue * _stakes) / 10^18)))
         uint FAMReward = ( ( ( nbDay * ( ( ( ETHValue * _stakes ) / 1000000000000000000 ) / 10000 ) ) * 1000000000000000000 ) / FAMValue );
         // Updating user pending balance
