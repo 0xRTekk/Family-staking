@@ -121,7 +121,9 @@ function Staking() {
       <Header as='h1' className="staking-title">
         Stake your <strong>{tokenToDisplay.symbol}</strong>
         <Header.Subheader className="hero-subtitle">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, fuga.
+          {token === "ETH" && <span>Précisez le montant à déposer en ETH. Montant minimum : 0,01 ETH</span>}
+          {token === "DAI" && <span>Précisez le montant à déposer en DAI. Montant minimum : 0,01 DAI</span>}
+          {token === "FAM" && <span>Précisez le montant à déposer en FAM. Montant minimum : 0,01 FAM</span>}
         </Header.Subheader>
         {token === "DAI" && <Button onClick={handleDaiFaucet}>DAI FAUCET</Button>}
         {token === "FAM" && <Button onClick={handleFamFaucet}>FAM FAUCET</Button>}
