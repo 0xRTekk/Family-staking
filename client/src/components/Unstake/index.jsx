@@ -68,7 +68,7 @@ function Staking() {
       <Header as='h1' className="unstake-title">
         Unstake your <strong>{tokenToDisplay.symbol}</strong>
         <Header.Subheader className="hero-subtitle">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, fuga.
+          Récupérez vos tokens. Attention, tous les dépots sont bloqués pendant une période de 2 jours.
         </Header.Subheader>
       </Header>
 
