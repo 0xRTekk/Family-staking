@@ -39,6 +39,7 @@ export const initialState = {
     },
   ],
   depositEvents: [],
+  withdrawEvents: [],
 };
 
 const reducer = (state = initialState, action = {}) => {
@@ -120,6 +121,12 @@ const reducer = (state = initialState, action = {}) => {
         tokens: [
           ...newStateTokens,
         ],
+      }
+    }
+    case 'GET_PAST_WITHDRAW_EVENTS': {
+      return {
+        ...state,
+        withdrawEvents: action.events,
       }
     }
     default:
