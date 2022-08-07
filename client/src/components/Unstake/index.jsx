@@ -1,4 +1,5 @@
 // == Import
+import Web3 from 'web3';
 import { Header, Card, Button, Form } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,6 +18,7 @@ function Staking() {
   };
 
   const handleUnstake = () => {
+    // todo : branchement fonction withdrax. Ne pas oublier la conversion de l'inputValue (ether) en WEI
     dispatch({ type: 'UNSTAKE', token: token });
   };
 
@@ -40,7 +42,7 @@ function Staking() {
             <div className="unstake-datas">
               <div className="unstake-datas-total-stake">
                 <p>Total staked</p>
-                <p>{tokenToDisplay.totalStaked.toFixed(3)} {tokenToDisplay.symbol}</p>
+                <p>{Web3.utils.fromWei(Web3.utils.toBN(tokenToDisplay.stakedBalance), 'ether')} {tokenToDisplay.symbol}</p>
               </div>
               <div className="unstake-datas-price">
                 <p>Exchange rate</p>
@@ -52,7 +54,7 @@ function Staking() {
               </div>
               <div className="unstake-datas-estimated-rewards">
                 <p>Estimated rewards</p>
-                <p>{tokenToDisplay.estimatedFAMRewards.toFixed(3)}FAM</p>
+                <p>{Web3.utils.fromWei(Web3.utils.toBN(tokenToDisplay.estimatedFAMRewards), 'ether')}FAM</p>
               </div>
             </div>
           </Card.Description>

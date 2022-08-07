@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // == Import
-import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Web3 from 'web3';
@@ -18,18 +17,13 @@ function Staking() {
   const tokenToDisplay = tokens.find((item) => item.symbol === token);
   const { state: { accounts, artifact, contract, networkID } } = useEth();
 
-  const handleChange = (evt) => {
+  const handleChange = (evt) => {    
     dispatch({ type: 'CHANGE_STAKING_VALUE', value: evt.target.value });
   };
 
   const handleStake = async () => {
     let TokenContract;
     let TokenStakingContract;
-    let DAIContract;
-    let FAMContract;
-    let DAIStakeContract;
-    let ETHStakeContract;
-    let FAMStakeContract;
 
     // On recup les instances des contracts à utiliser
     if (token === "DAI") {
@@ -44,17 +38,20 @@ function Staking() {
     
     //! La gestion de l'allowance n'est pas applicable si on send de l'ETH
     if (token !== "ETH") {
-      // On recup l'allowance du contract de staking sur les tokens de l'account
-      const allowance = await TokenContract.methods.allowance(accounts[0], TokenStakingContract.options.address).call({ from: accounts[0] });
+      // On recup et converti l'allowance du contract de staking sur les tokens de l'account
+      let allowance = await TokenContract.methods.allowance(accounts[0], TokenStakingContract.options.address).call({ from: accounts[0] });
+      allowance = Web3.utils.toWei(allowance, 'ether');
+      const value = Web3.utils.toWei(inputValue, 'ether');
+      // console.log(allowance, value);
 
       // Si l'allowance n'est pas suffisante
-      if (allowance < parseInt(inputValue)) {
+      if (allowance < value) {
 
         // On définit la valeur de l'allowance avec la valeur que veut stake l'utilisateur
-        await TokenContract.methods.approve(TokenStakingContract.options.address, parseInt(inputValue)).send({ from: accounts[0] });
+        await TokenContract.methods.approve(TokenStakingContract.options.address, value).send({ from: accounts[0] });
         
         // On stake
-        const receipt = await TokenStakingContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
+        const receipt = await TokenStakingContract.methods.deposit(value).send({ from: accounts[0] });
 
         // On recup l'event
         const returnedValues = receipt.events.DepositRegistered.returnValues;
@@ -67,12 +64,12 @@ function Staking() {
         dispatch({ type: 'DEPOSIT_EVENT', event: cleanedDepositEvent });
 
         // Un p'tit message pour notifier l'utilisateur
-        alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
+        alert(`Vous avez bien staké ${inputValue} ${token}`);
 
       } else {
 
         // Si l'allowance est suffisante on stake directement
-        const receipt = await TokenStakingContract.methods.deposit( parseInt(inputValue)).send({ from: accounts[0] });
+        const receipt = await TokenStakingContract.methods.deposit(value).send({ from: accounts[0] });
 
         // On recup l'event
         const returnedValues = receipt.events.DepositRegistered.returnValues;
@@ -101,7 +98,7 @@ function Staking() {
       dispatch({ type: 'DEPOSIT_EVENT', event: cleanedDepositEvent });
 
       // Un p'tit message pour notifier l'utilisateur
-      alert(`Vous avez bien staké ${returnedValues.amount} ${token}`);
+      alert(`Vous avez bien staké ${inputValue} ${token}`);
     }
 
     // On refresh pour recup les bonnes infos depuis le SM
@@ -142,7 +139,7 @@ function Staking() {
             <div className="staking-datas">
               <div className="staking-datas-total-stake">
                 <p>Your staked balance</p>
-                <p>{tokenToDisplay.stakedBalance} {tokenToDisplay.symbol}</p>
+                <p>{Web3.utils.fromWei(Web3.utils.toBN(tokenToDisplay.stakedBalance), 'ether')} {tokenToDisplay.symbol}</p>
               </div>
               <div className="staking-datas-price">
                 <p>Exchange rate</p>
@@ -154,7 +151,7 @@ function Staking() {
               </div>
               <div className="staking-datas-estimated-rewards">
                 <p>Estimated rewards</p>
-                <p>{tokenToDisplay.estimatedFAMRewards.toFixed(3)}FAM</p>
+                <p>{Web3.utils.fromWei(Web3.utils.toBN(tokenToDisplay.estimatedFAMRewards), 'ether')}FAM</p>
               </div>
             </div>
           </Card.Description>

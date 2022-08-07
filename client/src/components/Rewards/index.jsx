@@ -1,7 +1,8 @@
 // == Import
-import { Header, Segment, Card, Button } from 'semantic-ui-react';
+import Web3 from 'web3';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Header, Segment, Card, Button } from 'semantic-ui-react';
 import './rewards.scss';
 
 // == Composant
@@ -31,13 +32,13 @@ function Rewards() {
                     </div>
                     <div className="rewards-total-staked">
                       <p><strong>Total Staked</strong></p>
-                      <p>{token.totalStaked} ETH</p>
-                      <p>{token.totalStaked * token.price} $</p>
+                      <p>{Web3.utils.fromWei(Web3.utils.toBN(token.totalStaked), 'ether')} ETH</p>
+                      <p>{Web3.utils.fromWei(Web3.utils.toBN(token.totalStaked), 'ether') * token.price} $</p>
                     </div>
                     <div className="rewards-FAM-earned">
                       <p><strong>Estimated FAM to earn</strong></p>
-                      <p>{token.earnedFAM} FAM</p>
-                      <p>{token.earnedFAM * FAM.price} $</p>
+                      <p>{Web3.utils.fromWei(Web3.utils.toBN(token.earnedFAM), 'ether')} FAM</p>
+                      <p>{Web3.utils.fromWei(Web3.utils.toBN(token.earnedFAM), 'ether') * FAM.price} $</p>
                     </div>
                     <div className="rewards-FAM-price">
                       <p><strong>FAM price</strong></p>
