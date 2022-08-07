@@ -123,6 +123,21 @@ const reducer = (state = initialState, action = {}) => {
         ],
       }
     }
+    case 'UPDATE_RATES': {
+      // On recup le token a update
+      const tokenToUpdate = state.tokens.find((token) => token.symbol === action.token.symbol);
+      // On rajoute le montant a stake
+      tokenToUpdate.price = parseInt(action.token.price / 10**18);
+      // Nouvelle version du state.tokens sans le token à rajouter
+      const newStateTokens = state.tokens.filter((token) => token.symbol !== action.token.symbol);
+      newStateTokens.push(tokenToUpdate);
+      return {
+        ...state,
+        tokens: [
+          ...newStateTokens,
+        ],
+      }
+    }
     case 'GET_PAST_WITHDRAW_EVENTS': {
       return {
         ...state,

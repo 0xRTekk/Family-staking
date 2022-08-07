@@ -62,6 +62,30 @@ function Header() {
         dispatch({ type: 'GET_PAST_DEPOSIT_EVENTS', events: depositEvents });
       }
     };
+    
+    async function updateDAIRate(){
+      if(contract){
+        const DAIStakeContract = findContract(artifact, contract, networkID, "DataFeedDAIUSD");
+        const DAIRate = await DAIStakeContract.methods.getLatestPrice().call({from: accounts[0]});
+        const token = {
+          symbol: "DAI",
+          price: DAIRate
+        }
+        dispatch({type: 'UPDATE_RATES', token: token});
+      }
+    };
+
+    async function updateETHRate(){
+      if(contract){
+        const ETHStakeContract = findContract(artifact, contract, networkID, "DataFeedETHUSD");
+        const ETHRate = await ETHStakeContract.methods.getLatestPrice().call({from: accounts[0]});
+        const token = {
+          symbol: "ETH",
+          price: ETHRate
+        }
+        dispatch({type: 'UPDATE_RATES', token: token});
+      }
+    };
 
     async function loadWithdrawEvents() {
       if (contract) {
@@ -160,6 +184,8 @@ function Header() {
     loadDAIStats();
     // loadFAMStats();
     loadETHStats();
+    updateDAIRate();
+    updateETHRate();
   }, [contract]);
 
   return (
