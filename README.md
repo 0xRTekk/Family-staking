@@ -20,6 +20,9 @@ Ces deux oracles fallbacks vers des valeurs par defaut si utilisation sur Ganach
 # Lien Github Page
 https://remitekky.github.io/Family-staking/
 
+# Vidéo
+https://www.loom.com/share/80ec017024204d5890ffc99ee78ec151
+
 # Equipe :
 - Maud Hutchinson
 - Remy Sulpice
