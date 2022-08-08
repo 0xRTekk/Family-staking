@@ -40,6 +40,6 @@ https://remitekky.github.io/Family-staking/
 https://www.loom.com/share/80ec017024204d5890ffc99ee78ec151
 
 ## Equipe :
-- Maud Hutchinson
-- Remi Sulpice
-- Yohann Youssouf
+- Maud Hutchinson - FAM token, FAM Staking
+- Remi Sulpice - Front, DAI token, DAI Staking
+- Yohann Youssouf - ETH Staking, Chainlink Datafeeds, Front
