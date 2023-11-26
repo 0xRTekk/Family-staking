@@ -17,12 +17,12 @@ function App() {
         <Header />
 
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/stake/:token" element={<Staking />} />
-          <Route path="/unstake/:token" element={<Unstake />} />
-          <Route path="/rewards" element={<Rewards />} />
-          <Route path="/history" element={<StakeHistory />} />
-          <Route path="/*" element={<div>404</div>} />
+          <Route path="/Family-staking/" element={<Home />} />
+          <Route path="/Family-staking/stake/:token" element={<Staking />} />
+          <Route path="/Family-staking/unstake/:token" element={<Unstake />} />
+          <Route path="/Family-staking/rewards" element={<Rewards />} />
+          <Route path="/Family-staking/history" element={<StakeHistory />} />
+          <Route path="/Family-staking/*" element={<div>404</div>} />
         </Routes>
 
         <Footer />

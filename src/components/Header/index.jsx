@@ -194,7 +194,7 @@ function Header() {
           <Icon name='ethereum' size='big' />
           <NavLink
               className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link')}
-              to="/"
+              to="/Family-staking/"
             >
               <h1>Family Staking</h1>
             </NavLink>
@@ -204,7 +204,7 @@ function Header() {
           <List.Item>
             <a
               className="menu-link"
-              href="/#stacking-list-anchor"
+              href="/Family-staking/#stacking-list-anchor"
             >
               Staking
             </a>
@@ -212,7 +212,7 @@ function Header() {
           <List.Item disabled>
             <NavLink
               className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link menu-link--disabled')}
-              to="/liquidity"
+              to="/Family-staking/liquidity"
             >
               Liquidity pools <span className="menu-link--coming-soon">soon</span>
             </NavLink>
@@ -220,7 +220,7 @@ function Header() {
           <List.Item>
             <NavLink
               className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link')}
-              to="/rewards"
+              to="/Family-staking/rewards"
             >
               Rewards
             </NavLink>
@@ -228,7 +228,7 @@ function Header() {
           <List.Item>
             <NavLink
               className={({ isActive }) => (isActive ? 'menu-link--active' : 'menu-link')}
-              to="/history"
+              to="/Family-staking/history"
             >
               History
             </NavLink>
