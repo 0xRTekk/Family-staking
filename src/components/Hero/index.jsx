@@ -12,7 +12,7 @@ function Hero() {
       <Header as='h2' className="hero-title">
         Bienvenue chez <strong>Family Staking</strong>
         <Header.Subheader className="hero-subtitle">
-          Venez construire un avenir financier confortable pour vous et votre famille
+          Venez construire un avenir financier confortable pour votre famille 🫶
         </Header.Subheader>
         <Button color='purple' size='massive' className="hero-button" as="a" href="/#stacking-list-anchor">
           Stake Now
