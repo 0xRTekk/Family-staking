@@ -57,12 +57,11 @@ contract StakeFMLY is Ownable {
 
         // Effects :
         // - Rewards calculation
-        // - Tranfer staked tokens
-        // - Mint rewards token on msg sender's wallet
+        // - Tranfer staked tokens + rewards on msg sender's wallet
         // - Update SC state
         uint rewards = getRewards();
-        stakingToken.transfer(msg.sender, stakingInfos[msg.sender].amount);
-        stakingToken.mint(msg.sender, rewards);
+        stakingToken.transfer(msg.sender, stakingInfos[msg.sender].amount + rewards);
+        // stakingToken.transfer(msg.sender, rewards);
         delete stakingInfos[msg.sender];
         totalStaker--;
 
