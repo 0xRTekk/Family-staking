@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./FMLYToken.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "hardhat/console.sol";
+// import "hardhat/console.sol";
 
 contract StakeFMLY is Ownable {
     FMLYToken public stakingToken;
@@ -15,13 +15,17 @@ contract StakeFMLY is Ownable {
     }
     mapping (address => StakingInfos) public stakingInfos;
     uint public totalStaker;
+    uint public totalStaked;
     uint public stakingRate = 32;
 
     event Stake(address account, uint amount);
     event Withdraw(address account, uint amount, uint rewards);
 
-    constructor(address _stakingToken) Ownable(msg.sender) {
-        stakingToken = FMLYToken(_stakingToken);
+    constructor() Ownable(msg.sender) {
+        // At deployement we create and deploy a new FMLYToken contract
+        // we store the address in the stakingToken variable
+        // and we mint the initial supply to the msg.sender (this contract)
+        stakingToken = new FMLYToken();
     }
 
     function stake(uint _amount) external {
@@ -44,6 +48,7 @@ contract StakeFMLY is Ownable {
             hasStaked: true
         });
         totalStaker++;
+        totalStaked += _amount;
 
         // Interractions:
         // - emit Stake event
@@ -61,9 +66,9 @@ contract StakeFMLY is Ownable {
         // - Update SC state
         uint rewards = getRewards();
         stakingToken.transfer(msg.sender, stakingInfos[msg.sender].amount + rewards);
-        // stakingToken.transfer(msg.sender, rewards);
-        delete stakingInfos[msg.sender];
         totalStaker--;
+        totalStaked -= stakingInfos[msg.sender].amount;
+        delete stakingInfos[msg.sender];
 
         // Interractions :
         // - emit Withdraw event
@@ -71,10 +76,6 @@ contract StakeFMLY is Ownable {
     }
 
     function getRewards() public view returns (uint) {
-        // Checks :
-        // - Account has staked
-        require(stakingInfos[msg.sender].hasStaked, "No staking found for the user");
-
         // Effects :
         // - Get the staking duration in seconds
         // - Calcul the rewards => (amount * duration * rate) / 365 days
