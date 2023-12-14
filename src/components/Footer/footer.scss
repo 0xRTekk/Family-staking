@@ -2,10 +2,10 @@
 
 .footer {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 2.3em 0;
+  padding: 2.3em 10em;
   background-color: vars.$dark-gray;
 
   &-logo {

@@ -1,7 +1,31 @@
 @use 'src/styles/vars';
 
-main {
+.hero {
   width: 100%;
-  padding-top: 3em;
+  padding: 3em 10em;
   background-color: vars.$light-gray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 2em;
+
+  &-title {
+    font-size: 2em !important;
+  }
+
+  &-subtitle {
+    font-size: 0.5em !important;
+  }
+
+  &-actions {
+    margin-top: 1.5em !important;
+
+    a {
+      color: white;
+
+      &:hover {
+        color: white !important;
+      }
+    }
+  }
 }

@@ -1,0 +1,28 @@
+@use 'src/styles/vars';
+
+.stake {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: vars.$light-gray;
+  text-align: center;
+
+  &-card {
+    width: 70% !important;
+    padding: 3rem 3rem 0 !important;
+    border-radius: 10px !important;
+  }
+
+  &-datas {
+    padding: 1em 0;
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+  }
+}
