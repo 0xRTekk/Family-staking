@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Image, Header, Button, Divider } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { readContract, prepareWriteContract, writeContract } from '@wagmi/core';
@@ -69,8 +70,10 @@ function Home() {
             <Button color='purple' size='massive' className="hero-button" onClick={callFaucet}>
               Faucet FMLY
             </Button>
-            <Button color='purple' size='massive' className="hero-button" as="a" href="/Family-staking/stake">
-              Stake Now
+            <Button color='purple' size='massive' className="hero-button">
+              <Link to="/Family-staking/stake">
+                Stake Now
+              </Link>  
             </Button>
           </>
         ) : (
