@@ -47,7 +47,7 @@ function Home() {
           Cette plateforme vous permet de staker des tokens <strong>FMLY</strong> pour en gagner d'avantage<br />
           🚧 Notez que cette plateforme n'existe que pour l'apprentissage du développement Blockchain.🚧<br />
           🚧Le token FMLY n'a aucune valeur et n'existe uniquement à des fins d'éducations.🚧<br />
-          Adresse du token : {FMLYTokenAddress}
+          <a href='https://sepolia.etherscan.io/address/0x99FdAf84F3aD77D041A99a80a6FEA895f3F6E15c' target='_blank'>🔗 Adresse du token sur le testnet Ethereum Sepolia</a>
           </Header.Subheader>
 
         <div className="hero-actions">
