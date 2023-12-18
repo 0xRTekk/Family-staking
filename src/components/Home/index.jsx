@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Image, Header, Button } from 'semantic-ui-react';
+import { Image, Header, Button, Divider } from 'semantic-ui-react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { readContract, prepareWriteContract, writeContract } from '@wagmi/core';
@@ -42,13 +42,26 @@ function Home() {
   return (
     <div className="hero">
       <Header as='h2' className="hero-title">
-        Bienvenue sur la plateforme <strong>Family Staking</strong> 🫶
+        Bienvenue sur la plateforme <strong>Family Staking</strong> 👨‍👩‍👧‍👦
         <Header.Subheader className="hero-subtitle">
-          Cette plateforme vous permet de staker des tokens <strong>FMLY</strong> pour en gagner d'avantage<br />
-          🚧 Notez que cette plateforme n'existe que pour l'apprentissage du développement Blockchain.🚧<br />
-          🚧Le token FMLY n'a aucune valeur et n'existe uniquement à des fins d'éducations.🚧<br />
-          <a href='https://sepolia.etherscan.io/address/0x99FdAf84F3aD77D041A99a80a6FEA895f3F6E15c' target='_blank'>🔗 Adresse du token sur le testnet Ethereum Sepolia</a>
-          </Header.Subheader>
+          Le <a href="<a href='https://sepolia.etherscan.io/address/0x99FdAf84F3aD77D041A99a80a6FEA895f3F6E15c' target='_blank'>">FMLY token</a> est un ERC20 crée pour cette Dapp. Ce token n'a aucune valeur hormis didactique.<br />
+          Vous pouvez en recupérer grâce au faucet mit à votre disposition.<br />
+          Une fois en votre possession, vous pouvez les staker dans le smart contract afin de générer des récompenses ! 🤑
+        </Header.Subheader>
+        <Divider />
+        <Header.Subheader className="hero-subtitle">
+          <ol>
+            <li>Connectez votre wallet</li>
+            <li>Assurez vous d'être sur le réseau <strong>Sepolia</strong></li>
+            <li>Assurez vous d'avoir quelques fake ETH du réseau : <a href='https://sepoliafaucet.com/' target='_blank'>Sepolia Faucet ETH</a></li>
+            <li>Recupérez quelques FMLY gâce au faucet mit à votre disposition</li>
+            <li>Rendez-vous sur la page de staking</li>
+            <li>Approuver le smart contract de staking à bloquer la quantité désirée de vos FMLY</li>
+            <li>Staker les</li>
+            <li>Attendez un peu</li>
+            <li>Recupérer vos FMLY stake et vos rewards en plus 🚀</li>
+          </ol>
+        </Header.Subheader>
 
         <div className="hero-actions">
         {isConnected ? (

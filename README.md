@@ -1,45 +1,27 @@
 # Family Staking Dapp
 
-DAPP de staking permettant de gagner des rewards en FAM
+Dapp de staking permettant de bloquer des token FMLY et de gagner de rewards.
 
-Tous les contrats ont été déployé sur Kovan
+Le FMLY token est un ERC20 crée pour cette Dapp. Ce token n'a aucune valeur hormis didactique.
 
-Deux oracles Chainlink disponibles :
-- ETH/USD
-- DAI/USD
+Vous pouvez en recupérer grâce au faucet mit à votre disposition.
 
-Ces deux oracles fallbacks vers des valeurs par defaut si utilisation sur Ganache.
-
-3 contrats de Staking :
-- ETH
-- DAI
-- FAM
-
-1 Token de reward :
-- FAM - valeur fixée à 7,5€
+Une fois en votre possession, vous pouvez les staker dans le smart contract afin de générer des récompenses ! 🤑
 
 ## Comment utiliser le protocol
 
 1. Connectez votre wallet
-2. Assurez vous d'être sur le réseau **Kovan**
-3. Choisissez le token que vous souhaitez staker
-4. Pour le DAI (Fake DAI) & FAM (token du protocol), vous pouvez utiliser le faucet mit à disposition. Vous pouvez staker [du kETH](https://faucets.chain.link/)
-5. Entez le nombre de token à staker. ça va déclencher 2 fonctions : 
-    1. Une pour autoriser le protocol à déplacer le nombre de tokens souhaité
-    2. Une seconde pour les déplacer
-6. Vous pouvez regarder l'historique des stakes et unstake sur l'onglet "History"
-7. Vous pouvez consulter vos stakes dans l'onglet "Rewards"
-8. Vous pouvez unstake vos tokens à partir de cette page. Notez cependant qu'il vous faudra attendre un minimum de 2 jours avant de pouvoir retirer vos tokens
-9. Lorsque vous retirez vos tokens, les rewards (en token FAM) seront envoyés sur votre wallet !
-10. Enjoy and make millions of (fake) dollars 🚀
+2. Assurez vous d'être sur le réseau **Sepolia**
+3. Assurez vous d'avoir quelques fake ETH du réseau : [Sepolia Faucet ETH](https://sepoliafaucet.com/)
+4. Recupérez quelques FMLY gâce au faucet mit à votre disposition
+5. Rendez-vous sur la page de staking
+6. Approuver le smart contract de staking à bloquer la quantité désirée de vos FMLY
+7. Staker les
+8. Attendez un peu
+9. Recupérer vos FMLY stake et vos rewards en plus 🚀
 
-## Lien Github Page
-https://remitekky.github.io/Family-staking/
+## Liens
 
-## Vidéo
-https://www.loom.com/share/80ec017024204d5890ffc99ee78ec151
-
-## Equipe :
-- Maud Hutchinson - FAM token, FAM Staking
-- Remi Sulpice - Front, DAI token, DAI Staking
-- Yohann Youssouf - ETH Staking, Chainlink Datafeeds, Front
+- [Smart Contract ERC20 FMLY Token](https://sepolia.etherscan.io/address/0x99FdAf84F3aD77D041A99a80a6FEA895f3F6E15c)
+- [Smart Contract Staking](https://sepolia.etherscan.io/address/0x0A28900A37Cb28bb88A509bb73687D491298D31e)
+- [Faucet Sepolia ETH](https://sepoliafaucet.com/)
