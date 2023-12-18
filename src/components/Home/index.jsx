@@ -45,7 +45,7 @@ function Home() {
       <Header as='h2' className="hero-title">
         Bienvenue sur la plateforme <strong>Family Staking</strong> 👨‍👩‍👧‍👦
         <Header.Subheader className="hero-subtitle">
-          Le <a href="<a href='https://sepolia.etherscan.io/address/0x99FdAf84F3aD77D041A99a80a6FEA895f3F6E15c' target='_blank'>">FMLY token</a> est un ERC20 crée pour cette Dapp. Ce token n'a aucune valeur hormis didactique.<br />
+          Le <a href="https://sepolia.etherscan.io/address/0x99FdAf84F3aD77D041A99a80a6FEA895f3F6E15c">FMLY token</a> est un ERC20 crée pour cette Dapp. Ce token n'a aucune valeur hormis didactique.<br />
           Vous pouvez en recupérer grâce au faucet mit à votre disposition.<br />
           Une fois en votre possession, vous pouvez les staker dans le smart contract afin de générer des récompenses ! 🤑
         </Header.Subheader>
