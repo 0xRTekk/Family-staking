@@ -1,7 +1,6 @@
 // NPM
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
@@ -10,7 +9,6 @@ import { publicProvider } from 'wagmi/providers/public';
 // import { alchemyProvider } from 'wagmi/providers/alchemy';
 
 // LOCAL
-import store from './store';
 import App from './App';
 
 // ASSETS
@@ -42,12 +40,10 @@ const wagmiConfig = createConfig({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <Provider store={store}>
-      <WagmiConfig config={wagmiConfig}>
-          <RainbowKitProvider chains={chains}>
-            <App />
-          </RainbowKitProvider>
-        </WagmiConfig>
-    </Provider>
+    <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <App />
+        </RainbowKitProvider>
+      </WagmiConfig>
   </BrowserRouter>
 );
